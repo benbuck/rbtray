@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RBTray", "RBTray.vcxproj", "{CDDAA887-EEE9-47FA-B4B5-929A92D71248}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RBHook", "RBHook.vcxproj", "{9CD8044A-759A-4F65-B9FE-6DD8DD188428}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CDDAA887-EEE9-47FA-B4B5-929A92D71248}.Release|x64.ActiveCfg = Release|x64
+		{CDDAA887-EEE9-47FA-B4B5-929A92D71248}.Release|x64.Build.0 = Release|x64
+		{CDDAA887-EEE9-47FA-B4B5-929A92D71248}.Release|x86.ActiveCfg = Release|Win32
+		{CDDAA887-EEE9-47FA-B4B5-929A92D71248}.Release|x86.Build.0 = Release|Win32
+		{9CD8044A-759A-4F65-B9FE-6DD8DD188428}.Release|x64.ActiveCfg = Release|x64
+		{9CD8044A-759A-4F65-B9FE-6DD8DD188428}.Release|x64.Build.0 = Release|x64
+		{9CD8044A-759A-4F65-B9FE-6DD8DD188428}.Release|x86.ActiveCfg = Release|Win32
+		{9CD8044A-759A-4F65-B9FE-6DD8DD188428}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

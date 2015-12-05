@@ -1,0 +1,17 @@
+/ipch
+*.aps
+*.cache
+*.exp
+*.lastbuildstate
+*.lib
+*.log
+*.manifest
+*.obj
+*.opensdf
+*.pdb
+*.res
+*.sdf
+*.suo
+*.tlog
+*.user
+!/**/RBTray.exe
