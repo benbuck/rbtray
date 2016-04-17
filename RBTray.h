@@ -4,6 +4,7 @@
 #define WM_REMTRAY  0x0402
 #define WM_REFRTRAY 0x0403
 #define WM_TRAYCMD  0x0404
+#define WM_FORCECLOSE 0x0405
 #define IDM_RESTORE 0x1001
 #define IDM_CLOSE   0x1002
 #define IDM_EXIT    0x1003

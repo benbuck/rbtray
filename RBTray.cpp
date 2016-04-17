@@ -113,6 +113,19 @@ static void RestoreWindowFromTray(HWND hwnd) {
 	RemoveWindowFromTray(hwnd);
 }
 
+
+static void ForceCloseWindow(HWND hwnd) {
+	// Don't minimize MDI child windows
+	if ((UINT)GetWindowLongPtr(hwnd, GWL_EXSTYLE) & WS_EX_MDICHILD) return;
+
+	// If hwnd is a child window, find parent window (e.g. minimize button in
+	// Office 2007 (ribbon interface) is in a child window)
+	if ((UINT)GetWindowLongPtr(hwnd, GWL_STYLE) & WS_CHILD) {
+		hwnd = GetAncestor(hwnd, GA_ROOT);
+	}
+	EndTask(hwnd, false, true);
+}
+
 static void CloseWindowFromTray(HWND hwnd) {
 	// Use PostMessage to avoid blocking if the program brings up a dialog on exit.
 	// Also, Explorer windows ignore WM_CLOSE messages from SendMessage.
@@ -210,6 +223,9 @@ LRESULT CALLBACK HookWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) 
 			break;
 		case WM_ADDTRAY:
 			MinimizeWindowToTray((HWND)lParam);
+			break;
+		case WM_FORCECLOSE:
+			ForceCloseWindow((HWND)lParam);
 			break;
 		case WM_REMTRAY:
 			RestoreWindowFromTray((HWND)lParam);

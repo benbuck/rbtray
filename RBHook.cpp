@@ -32,22 +32,28 @@ LRESULT CALLBACK MouseProc(int nCode, WPARAM wParam, LPARAM lParam) {
 	if (nCode >= 0) {
 		if (wParam == WM_NCRBUTTONDOWN || wParam == WM_NCRBUTTONUP) {
 			MOUSEHOOKSTRUCT *info = (MOUSEHOOKSTRUCT*)lParam;
-			BOOL isHit = (info->wHitTestCode == HTMINBUTTON) || GetKeyState(VK_SHIFT);
-			if (wParam == WM_NCRBUTTONDOWN && isHit) {
+UINT testcode = info->wHitTestCode;			
+BOOL isMinHit = testcode == HTMINBUTTON || GetKeyState(VK_SHIFT);
+BOOL isCloseHit = testcode == HTCLOSE;
+			if (wParam == WM_NCRBUTTONDOWN && (isMinHit || isCloseHit)) {
 				_hLastHit = info->hwnd;
 				return 1;
 			}
-			else if (wParam == WM_NCRBUTTONUP && isHit) {
+			if (wParam == WM_NCRBUTTONUP && (isMinHit || isCloseHit)) {
 				if (info->hwnd == _hLastHit) {
+					if(isMinHit){
 					PostMessage(FindWindow(NAME, NAME), WM_ADDTRAY, 0, (LPARAM)info->hwnd);
+				}
+					else
+					{
+						PostMessage(FindWindow(NAME, NAME), WM_FORCECLOSE, 0, (LPARAM)info->hwnd);
+					}
 				}
 				_hLastHit = NULL;
 				return 1;
 			}
-			else {
 				_hLastHit = NULL;
 			}
-		}
 		else if (wParam == WM_RBUTTONDOWN || wParam == WM_RBUTTONUP) {
 			_hLastHit = NULL;
 		}
