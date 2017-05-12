@@ -122,9 +122,7 @@ static bool RemoveWindowFromTray(HWND hwnd) {
 }
 
 static void RestoreWindowFromTray(HWND hwnd) {
-    if (!ShowWindow(hwnd, SW_SHOW)) {
-        return;
-    }
+    ShowWindow(hwnd, SW_SHOW);
     SetForegroundWindow(hwnd);
     RemoveWindowFromTray(hwnd);
 }
