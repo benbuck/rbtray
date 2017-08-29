@@ -1,5 +1,6 @@
 #/ipch
 /.vs
+/afxres.h
 *.aps
 *.cache
 *.db
@@ -12,6 +13,8 @@
 *.opendb
 *.pdb
 *.res
+*.sdf
+*.suo
 *.tlog
 *.user
 !/**/RBTray.exe
