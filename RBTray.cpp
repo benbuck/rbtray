@@ -245,6 +245,13 @@ LRESULT CALLBACK HookWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) 
                     break;
             }
             break;
+        case WM_HOTKEY:
+        {
+            HWND fgwnd = GetForegroundWindow();
+            if (fgwnd)
+                MinimizeWindowToTray(fgwnd);
+            break;
+        }
         case WM_DESTROY:
             for (int i = 0; i < MAXTRAYITEMS; i++) {
                 if (_hwndItems[i]) {
@@ -314,10 +321,17 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR szCmdLine
     }
     WM_TASKBAR_CREATED = RegisterWindowMessage(L"TaskbarCreated");
 
+    BOOL registeredHotKey = RegisterHotKey(_hwndHook, 0, MOD_WIN | MOD_ALT, VK_DOWN);
+    if (!registeredHotKey)
+        MessageBox(NULL, L"Couldn't register hotkey", L"RBTray", MB_OK | MB_ICONERROR);
+
     while (IsWindow(_hwndHook) && GetMessage(&msg, _hwndHook, 0, 0)) {
         TranslateMessage(&msg);
         DispatchMessage(&msg);
     }
+
+    if (registeredHotKey)
+        UnregisterHotKey(_hwndHook, 0);
 
     return 0;
 }
