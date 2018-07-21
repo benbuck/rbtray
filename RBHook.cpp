@@ -22,12 +22,12 @@
 
 #include <windows.h>
 #include <stdio.h>
-#include "rbtray.h"
+#include "RBTray.h"
 
 static HHOOK _hMouse = NULL;
 static HHOOK _hWndProc = NULL;
 static HWND _hLastHit = NULL;
-static unsigned int _hack;
+
 
 //#define DEBUG_PRINTF(fmt, ...) do { char buf[1024]; snprintf(buf, sizeof(buf), fmt, ##__VA_ARGS__); OutputDebugStringA(buf); } while (0)
 

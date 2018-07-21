@@ -21,7 +21,7 @@
 // ****************************************************************************
 
 #include <windows.h>
-#include "rbtray.h"
+#include "RBTray.h"
 #include "resource.h"
 
 #define MAXTRAYITEMS 64

@@ -1,4 +1,4 @@
-# rbtray-code
+# rbtray
 A minor fork of RBTray from http://sourceforge.net/p/rbtray/code/
 
 Version 4.4
