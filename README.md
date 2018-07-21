@@ -11,3 +11,6 @@ Update project files to VS2015.
 
 Version 4.6
 Fix compatibility issue with some Windows 10 64 bit environments.
+
+Version 4.7
+Support minimizing with Win-Alt-Down hotkey.
