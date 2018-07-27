@@ -11,9 +11,9 @@ RBTray is free, open source, and is distributed under the terms of the [GNU Gene
 
 ## Download
 
-- [Original RBTray 4.3](http://sourceforge.net/projects/rbtray/files/rbtray/4.3/RBTray-4_3.zip/download)
-- [Older Versions](http://sourceforge.net/projects/rbtray/files/)
-- [Modified (forked) version.](https://github.com/benbuck/rbtray)
+- [64 bit binaries](x64)
+- [32 bit binaries](x86)
+- [Original RBTray](http://sourceforge.net/projects/rbtray/files/)
 
 ## Changes
 
