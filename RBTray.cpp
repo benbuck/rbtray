@@ -247,9 +247,18 @@ LRESULT CALLBACK HookWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) 
             break;
         case WM_HOTKEY:
         {
-            HWND fgwnd = GetForegroundWindow();
-            if (fgwnd)
-                MinimizeWindowToTray(fgwnd);
+            HWND fgWnd = GetForegroundWindow();
+            if (!fgWnd)
+                break;
+
+            LONG style = GetWindowLong(fgWnd, GWL_STYLE);
+            if (!(style & WS_MINIMIZEBOX)) {
+                // skip, no minimize box
+                break;
+            }
+
+            MinimizeWindowToTray(fgWnd);
+
             break;
         }
         case WM_DESTROY:
