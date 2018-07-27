@@ -334,5 +334,5 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR szCmdLine
     if (registeredHotKey)
         UnregisterHotKey(_hwndHook, 0);
 
-    return 0;
+    return (int)msg.wParam;
 }
