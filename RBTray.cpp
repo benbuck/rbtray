@@ -262,14 +262,15 @@ LRESULT CALLBACK HookWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) 
             FreeLibrary(_hLib);
             PostQuitMessage(0);
             break;
-    }
-
-    if (msg == WM_TASKBAR_CREATED) {
-        for (int i = 0; i < MAXTRAYITEMS; i++) {
-            if (_hwndItems[i]) {
-                AddToTray(i);
+        default:
+            if (msg == WM_TASKBAR_CREATED) {
+                for (int i = 0; i < MAXTRAYITEMS; i++) {
+                    if (_hwndItems[i]) {
+                        AddToTray(i);
+                    }
+                }
             }
-        }
+            break;
     }
 
     return DefWindowProc(hwnd, msg, wParam, lParam);
