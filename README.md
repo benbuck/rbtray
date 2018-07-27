@@ -89,5 +89,7 @@ popup menu, or run RBTray.exe with the --exit parameter.
 ## Other
 
 For original forum, bug tracker, etc. see [RBTray SourceForge project page](http://sourceforge.net/projects/rbtray/).
+
 Copyright &copy; 1998-2011 Nikolay Redko, J.D. Purcell
+
 Copyright &copy; 2015 Benbuck Nason
