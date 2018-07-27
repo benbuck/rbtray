@@ -1,153 +1,105 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-  "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>RBTray</title>
-</head>
-<body>
-<span style="font-size: xx-large; font-weight: bold">RBTray</span><br>
-<br>
-RBTray is a small Windows program that runs in the background and allows almost any window to be minimized to the system tray by right clicking its minimize button or shift-right-clicking on its title bar.<br>
-<br>
-It is free, open source, and is distributed under the terms of the <a href="http://www.gnu.org/copyleft/gpl.html">GNU General Public Licence</a>.<br>
-<br>
-<span style="font-size: large; font-weight: bold">Download:</span><br>
-<br>
-<a href="http://sourceforge.net/projects/rbtray/files/rbtray/4.3/RBTray-4_3.zip/download">Original RBTray 4.3</a><br>
-<a href="http://sourceforge.net/projects/rbtray/files/">Older Versions</a><br>
-<a href="https://github.com/benbuck/rbtray">Modified (forked) version.</a><br>
-<br>
-<span style="font-size: large; font-weight: bold">Changes:</span><br>
-<ul>
-<li>
-4.8 fork (2018-Jul-27) - Benbuck Nason
-    <ul>
-    <li>
-    Don't minimize desktop/taskbar/etc.
-    </li>
-    <li>
-    Return correct value from WinMain.
-    </li>
-    <li>
-    Allow processing of quit message.
-    </li>
-    <li>
-    Clean up handling of WM_TASKBAR_CREATED.
-    </li>
-    </ul>
-</li>
-<li>
-4.7 fork (2018-Jul-21) - Benbuck Nason
-    <ul>
-    <li>
-    Support minimizing with Win-Alt-Down hotkey.
-    </li>
-    </ul>
-</li>
-<li>
-4.6 fork (2017-Aug-29) - Benbuck Nason
-    <ul>
-    <li>
-    Fix compatibility issue with some Windows 10 64 bit environments.
-    </li>
-    </ul>
-</li>
-<li>
-4.5 fork (2017-May-12) - Benbuck Nason
-    <ul>
-    <li>
-    Add some error handling.
-    </li>
-    <li>
-    Fix bug in shift key check.
-    </li>
-    <li>
-    Update project files to VS2015.
-    </li>
-    </ul>
-</li>
-<li>
-4.4 fork (2015-Dec-05) - Benbuck Nason:
-    <ul>
-    <li>
-    Support minimizing by shift-right-clicking on window title bar.
-    </li>
-    </ul>
-</li>
-<li>
-4.3 (2011-Oct-30):
-    <ul>
-    <li>
-    Hide windows instead of minimizing and hiding.
-    </li>
-    <li>
-    Hide windows even if they're already in the tray.
-    </li>
-    <li>
-    Fix "Close Window" for Explorer windows.
-    </li>
-    </ul>
-</li>
-<li>
-4.2 (2011-Jun-24):
-    <ul>
-    <li>
-    Improve ability to minimize certain programs.
-    </li>
-    </ul>
-</li>
-<li>
-4.1 (2010-May-08):
-    <ul>
-    <li>
-    Unified mouse hook procedure improves reliability and fixes small minimize target with XP theming.
-    </li>
-    <li>
-    Fixed tooltip overflow for long window captions.
-    </li>
-    </ul>
-</li>
-<li>
-4.0 (2010-May-06):
-    <ul>
-    <li>
-    Alternative mouse hook procedure for Windows Vista/7 Aero compatibility.
-    </li>
-    <li>
-    Fixed 64-bit compatibility and created 64-bit compiles.
-    </li>
-    <li>
-    Removed window menu additions (e.g. Minimize in tray, Always on top), hotkey, and keyboard indicator.
-    </li>
-    <li>
-    Dropped Windows 9x support.
-    </li>
-    <li>
-    Tray icon tooltip can display Unicode characters.
-    </li>
-    <li>
-    Removes tray icon automatically if a program shows itself or exits.
-    </li>
-    <li>
-    Fixed problem when minimizing Office 2007 windows.
-    </li>
-    <li>
-    Won't minimize MDI child windows.
-    </li>
-    <li>
-    Other small fixes and reorganized code.</pre>
-    </li>
-    </ul>
-</li>
-</ul>
-<span style="font-size: large; font-weight: bold">Other:</span><br>
-<br>
-For original forum, bug tracker, etc. see <a href="http://sourceforge.net/projects/rbtray/">RBTray SourceForge project page</a>.<br>
-<br>
-Copyright &copy; 1998-2011 Nikolay Redko, J.D. Purcell
-<br>
-Copyright &copy; 2015 Benbuck Nason
-</body>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
+        <title>RBTray</title>
+    </head>
+
+    <body>
+        <h1>RBTray</h1>
+
+        <p>RBTray is a small Windows program that runs in the background and allows almost any window to be minimized to the system tray by</p>
+        <ul>
+            <li>right clicking its minimize button</li>
+            <li>shift-right-clicking on its title bar.</li>
+            <li>using the Windows-Alt-Down hotkey</li>
+        </ul>
+
+        <p>Note that not all all of these methods will work for every window, so please use whichever one works for your needs.</p>
+
+        <p>RBTray is free, open source, and is distributed under the terms of the <a href="http://www.gnu.org/copyleft/gpl.html">GNU General Public Licence</a>.</p>
+
+        <h2>Download:</h2>
+
+        <ul>
+            <li><a href="http://sourceforge.net/projects/rbtray/files/rbtray/4.3/RBTray-4_3.zip/download">Original RBTray 4.3</a></li>
+            <li><a href="http://sourceforge.net/projects/rbtray/files/">Older Versions</a></li>
+            <li><a href="https://github.com/benbuck/rbtray">Modified (forked) version.</a></li>
+        </ul>
+
+        <h2>Changes:</h2>
+
+        <ul>
+            <li>4.8 fork (2018-Jul-27) - Benbuck Nason
+                <ul>
+                    <li>Don't minimize desktop/taskbar/etc.</li>
+                    <li>Return correct value from WinMain.</li>
+                    <li>Allow processing of quit message.</li>
+                    <li>Clean up handling of WM_TASKBAR_CREATED.</li>
+                </ul>
+            </li>
+            <li>4.7 fork (2018-Jul-21) - Benbuck Nason
+                <ul>
+                    <li>Support minimizing with Win-Alt-Down hotkey.</li>
+                </ul>
+            </li>
+            <li>4.6 fork (2017-Aug-29) - Benbuck Nason
+                <ul>
+                    <li>Fix compatibility issue with some Windows 10 64 bit environments.</li>
+                </ul>
+            </li>
+            <li>4.5 fork (2017-May-12) - Benbuck Nason
+                <ul>
+                    <li>Add some error handling.</li>
+                    <li>Fix bug in shift key check.</li>
+                    <li>Update project files to VS2015.</li>
+                </ul>
+            </li>
+            <li>4.4 fork (2015-Dec-05) - Benbuck Nason:
+                <ul>
+                    <li>Support minimizing by shift-right-clicking on window title bar.</li>
+                </ul>
+            </li>
+            <li>4.3 (2011-Oct-30):
+                <ul>
+                    <li>Hide windows instead of minimizing and hiding.</li>
+                    <li>Hide windows even if they're already in the tray.</li>
+                    <li>Fix "Close Window" for Explorer windows.</li>
+                </ul>
+            </li>
+            <li>4.2 (2011-Jun-24):
+                <ul>
+                    <li>Improve ability to minimize certain programs.</li>
+                </ul>
+            </li>
+            <li>4.1 (2010-May-08):
+                <ul>
+                    <li>Unified mouse hook procedure improves reliability and fixes small minimize target with XP theming.</li>
+                    <li>Fixed tooltip overflow for long window captions.</li>
+                </ul>
+            </li>
+            <li>4.0 (2010-May-06):
+                <ul>
+                    <li>Alternative mouse hook procedure for Windows Vista/7 Aero compatibility.</li>
+                    <li>Fixed 64-bit compatibility and created 64-bit compiles.</li>
+                    <li>Removed window menu additions (e.g. Minimize in tray, Always on top), hotkey, and keyboard indicator.</li>
+                    <li>Dropped Windows 9x support.</li>
+                    <li>Tray icon tooltip can display Unicode characters.</li>
+                    <li>Removes tray icon automatically if a program shows itself or exits.</li>
+                    <li>Fixed problem when minimizing Office 2007 windows.</li>
+                    <li>Won't minimize MDI child windows.</li>
+                    <li>Other small fixes and reorganized code.</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h2>Other:</h2>
+
+        <p>For original forum, bug tracker, etc. see <a href="http://sourceforge.net/projects/rbtray/">RBTray SourceForge project page</a>.</p>
+        <p>Copyright &copy; 1998-2011 Nikolay Redko, J.D. Purcell</p>
+        <p>Copyright &copy; 2015 Benbuck Nason</p>
+
+    </body>
+
 </html>
