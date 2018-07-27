@@ -14,3 +14,9 @@ Fix compatibility issue with some Windows 10 64 bit environments.
 
 Version 4.7
 Support minimizing with Win-Alt-Down hotkey.
+
+Version 4.8
+Clean up handling of WM_TASKBAR_CREATED.
+Allow processing of quit message.
+Return correct value from WinMain.
+Don't minimize desktop/taskbar/etc.
