@@ -25,7 +25,7 @@
 #include "RBTray.h"
 
 static HHOOK _hMouse = NULL;
-static HHOOK _hWndProc = NULL;
+static HHOOK _hWndProcRet = NULL;
 static HWND _hLastHit = NULL;
 
 
@@ -35,7 +35,7 @@ static HWND _hLastHit = NULL;
 LRESULT CALLBACK MouseProc(int nCode, WPARAM wParam, LPARAM lParam) {
     if (nCode >= 0) {
         //if ((wParam != WM_MOUSEMOVE) && (wParam != WM_NCMOUSEMOVE)) DEBUG_PRINTF("%s(%d): nCode %d, wParam %llx, lParam %llx\n", __FUNCTION__, __LINE__, nCode, (long long int)wParam, (long long int)lParam);
-        MOUSEHOOKSTRUCT *info = (MOUSEHOOKSTRUCT*)lParam;
+        MOUSEHOOKSTRUCT * info = (MOUSEHOOKSTRUCT *)lParam;
         //if ((wParam != WM_MOUSEMOVE) && (wParam != WM_NCMOUSEMOVE)) DEBUG_PRINTF("%s(%d): pt (%ld, %ld), hwnd %p, wHitTestCode %u, dwExtraInfo %llx\n", __FUNCTION__, __LINE__, info->pt.x, info->pt.y, info->hwnd, info->wHitTestCode, info->dwExtraInfo);
         if ((wParam == WM_NCRBUTTONDOWN) || (wParam == WM_NCRBUTTONUP)) {
             //DEBUG_PRINTF("%s(%d): button\n", __FUNCTION__, __LINE__);
@@ -49,8 +49,7 @@ LRESULT CALLBACK MouseProc(int nCode, WPARAM wParam, LPARAM lParam) {
                     //DEBUG_PRINTF("%s(%d): down hit\n", __FUNCTION__, __LINE__);
                     _hLastHit = info->hwnd;
                     return 1;
-                }
-                else if ((wParam == WM_NCRBUTTONUP) && isHit) {
+                } else if ((wParam == WM_NCRBUTTONUP) && isHit) {
                     //DEBUG_PRINTF("%s(%d): up hit\n", __FUNCTION__, __LINE__);
                     if (info->hwnd == _hLastHit) {
                         //DEBUG_PRINTF("%s(%d): up hit match\n", __FUNCTION__, __LINE__);
@@ -58,14 +57,12 @@ LRESULT CALLBACK MouseProc(int nCode, WPARAM wParam, LPARAM lParam) {
                     }
                     _hLastHit = NULL;
                     return 1;
-                }
-                else {
+                } else {
                     //DEBUG_PRINTF("%s(%d): miss\n", __FUNCTION__, __LINE__);
                     _hLastHit = NULL;
                 }
             }
-        }
-        else if (wParam == WM_RBUTTONDOWN || wParam == WM_RBUTTONUP) {
+        } else if ((wParam == WM_RBUTTONDOWN) || (wParam == WM_RBUTTONUP)) {
             //DEBUG_PRINTF("%s(%d): not button\n", __FUNCTION__, __LINE__);
             _hLastHit = NULL;
         }
@@ -75,23 +72,23 @@ LRESULT CALLBACK MouseProc(int nCode, WPARAM wParam, LPARAM lParam) {
 
 // Only works for 32-bit apps or 64-bit apps depending on whether this is complied
 // as 32-bit or 64-bit
-LRESULT CALLBACK CallWndRetProc(int nCode, WPARAM wParam, LPARAM lParam) {
+LRESULT CALLBACK CallWndProcRet(int nCode, WPARAM wParam, LPARAM lParam) {
     if (nCode >= 0) {
-        CWPRETSTRUCT *msg = (CWPRETSTRUCT*)lParam;
-        if ((msg->message == WM_WINDOWPOSCHANGED &&
-             (((WINDOWPOS*)msg->lParam)->flags & SWP_SHOWWINDOW) != 0) ||
+        CWPRETSTRUCT * msg = (CWPRETSTRUCT *)lParam;
+        if (((msg->message == WM_WINDOWPOSCHANGED) &&
+            (((WINDOWPOS *)msg->lParam)->flags & SWP_SHOWWINDOW) != 0) ||
             (msg->message == WM_NCDESTROY))
         {
             PostMessage(FindWindow(NAME, NAME), WM_REFRTRAY, 0, (LPARAM)msg->hwnd);
         }
     }
-    return CallNextHookEx(_hWndProc, nCode, wParam, lParam);
+    return CallNextHookEx(_hWndProcRet, nCode, wParam, lParam);
 }
 
 BOOL DLLIMPORT RegisterHook(HMODULE hLib) {
     _hMouse = SetWindowsHookEx(WH_MOUSE, (HOOKPROC)MouseProc, hLib, 0);
-    _hWndProc = SetWindowsHookEx(WH_CALLWNDPROCRET, (HOOKPROC)CallWndRetProc, hLib, 0);
-    if (_hMouse == NULL || _hWndProc == NULL) {
+    _hWndProcRet = SetWindowsHookEx(WH_CALLWNDPROCRET, (HOOKPROC)CallWndProcRet, hLib, 0);
+    if ((_hMouse == NULL) || (_hWndProcRet == NULL)) {
         UnRegisterHook();
         return FALSE;
     }
@@ -103,8 +100,8 @@ void DLLIMPORT UnRegisterHook() {
         UnhookWindowsHookEx(_hMouse);
         _hMouse = NULL;
     }
-    if (_hWndProc) {
-        UnhookWindowsHookEx(_hWndProc);
-        _hWndProc = NULL;
+    if (_hWndProcRet) {
+        UnhookWindowsHookEx(_hWndProcRet);
+        _hWndProcRet = NULL;
     }
 }

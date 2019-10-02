@@ -36,17 +36,27 @@ static HWND _hwndForMenu;
 
 int FindInTray(HWND hwnd) {
     for (int i = 0; i < MAXTRAYITEMS; i++) {
-        if (_hwndItems[i] == hwnd) return i;
+        if (_hwndItems[i] == hwnd) {
+            return i;
+        }
     }
     return -1;
 }
 
 HICON GetWindowIcon(HWND hwnd) {
     HICON icon;
-    if (icon = (HICON)SendMessage(hwnd, WM_GETICON, ICON_SMALL, 0)) return icon;
-    if (icon = (HICON)SendMessage(hwnd, WM_GETICON, ICON_BIG, 0)) return icon;
-    if (icon = (HICON)GetClassLongPtr(hwnd, GCLP_HICONSM)) return icon;
-    if (icon = (HICON)GetClassLongPtr(hwnd, GCLP_HICON)) return icon;
+    if (icon = (HICON)SendMessage(hwnd, WM_GETICON, ICON_SMALL, 0)) {
+        return icon;
+    }
+    if (icon = (HICON)SendMessage(hwnd, WM_GETICON, ICON_BIG, 0)) {
+        return icon;
+    }
+    if (icon = (HICON)GetClassLongPtr(hwnd, GCLP_HICONSM)) {
+        return icon;
+    }
+    if (icon = (HICON)GetClassLongPtr(hwnd, GCLP_HICON)) {
+        return icon;
+    }
     return LoadIcon(NULL, IDI_WINLOGO);
 }
 
@@ -73,14 +83,18 @@ static bool AddToTray(int i) {
 
 static bool AddWindowToTray(HWND hwnd) {
     int i = FindInTray(NULL);
-    if (i == -1) return false;
+    if (i == -1) {
+        return false;
+    }
     _hwndItems[i] = hwnd;
     return AddToTray(i);
 }
 
 static void MinimizeWindowToTray(HWND hwnd) {
     // Don't minimize MDI child windows
-    if ((UINT)GetWindowLongPtr(hwnd, GWL_EXSTYLE) & WS_EX_MDICHILD) return;
+    if ((UINT)GetWindowLongPtr(hwnd, GWL_EXSTYLE) & WS_EX_MDICHILD) {
+        return;
+    }
 
     // If hwnd is a child window, find parent window (e.g. minimize button in
     // Office 2007 (ribbon interface) is in a child window)
@@ -113,7 +127,9 @@ static bool RemoveFromTray(int i) {
 
 static bool RemoveWindowFromTray(HWND hwnd) {
     int i = FindInTray(hwnd);
-    if (i == -1) return false;
+    if (i == -1) {
+        return false;
+    }
     if (!RemoveFromTray(i)) {
         return false;
     }
@@ -133,7 +149,9 @@ static void CloseWindowFromTray(HWND hwnd) {
     PostMessage(hwnd, WM_CLOSE, 0, 0);
 
     Sleep(50);
-    if (IsWindow(hwnd)) Sleep(50);
+    if (IsWindow(hwnd)) {
+        Sleep(50);
+    }
 
     if (!IsWindow(hwnd)) {
         // Closed successfully
@@ -143,11 +161,12 @@ static void CloseWindowFromTray(HWND hwnd) {
 
 void RefreshWindowInTray(HWND hwnd) {
     int i = FindInTray(hwnd);
-    if (i == -1) return;
+    if (i == -1) {
+        return;
+    }
     if (!IsWindow(hwnd) || IsWindowVisible(hwnd)) {
         RemoveWindowFromTray(hwnd);
-    }
-    else {
+    } else {
         NOTIFYICONDATA nid;
         ZeroMemory(&nid, sizeof(nid));
         nid.cbSize = NOTIFYICONDATA_V2_SIZE;
@@ -285,21 +304,18 @@ LRESULT CALLBACK HookWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) 
     return DefWindowProc(hwnd, msg, wParam, lParam);
 }
 
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR szCmdLine, int iCmdShow) {
-    WNDCLASS wc;
-    MSG msg;
-
+int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE /*hPrevInstance*/, _In_ LPSTR /*szCmdLine*/, _In_ int /*iCmdShow*/) {
     _hInstance = hInstance;
     _hwndHook = FindWindow(NAME, NAME);
     if (_hwndHook) {
         if (strstr(szCmdLine, "--exit")) {
             SendMessage(_hwndHook, WM_CLOSE, 0, 0);
-        }
-        else {
+        } else {
             MessageBox(NULL, L"RBTray is already running.", L"RBTray", MB_OK | MB_ICONINFORMATION);
         }
         return 0;
     }
+
     if (!(_hLib = LoadLibrary(L"RBHook.dll"))) {
         MessageBox(NULL, L"Error loading RBHook.dll.", L"RBTray", MB_OK | MB_ICONERROR);
         return 0;
@@ -308,6 +324,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR szCmdLine
         MessageBox(NULL, L"Error setting hook procedure.", L"RBTray", MB_OK | MB_ICONERROR);
         return 0;
     }
+
+    WNDCLASS wc;
     wc.style         = 0;
     wc.lpfnWndProc   = HookWndProc;
     wc.cbClsExtra    = 0;
@@ -322,26 +340,32 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR szCmdLine
         MessageBox(NULL, L"Error creating window class", L"RBTray", MB_OK | MB_ICONERROR);
         return 0;
     }
+
     if (!(_hwndHook = CreateWindow(NAME, NAME, WS_OVERLAPPED, 0, 0, 0, 0, (HWND)NULL, (HMENU)NULL, (HINSTANCE)hInstance, (LPVOID)NULL))) {
         MessageBox(NULL, L"Error creating window", L"RBTray", MB_OK | MB_ICONERROR);
         return 0;
     }
+
     for (int i = 0; i < MAXTRAYITEMS; i++) {
         _hwndItems[i] = NULL;
     }
+
     WM_TASKBAR_CREATED = RegisterWindowMessage(L"TaskbarCreated");
 
     BOOL registeredHotKey = RegisterHotKey(_hwndHook, 0, MOD_WIN | MOD_ALT, VK_DOWN);
-    if (!registeredHotKey)
+    if (!registeredHotKey) {
         MessageBox(NULL, L"Couldn't register hotkey", L"RBTray", MB_OK | MB_ICONERROR);
+    }
 
+    MSG msg;
     while (GetMessage(&msg, nullptr, 0, 0)) {
         TranslateMessage(&msg);
         DispatchMessage(&msg);
     }
 
-    if (registeredHotKey)
+    if (registeredHotKey) {
         UnregisterHotKey(_hwndHook, 0);
+    }
 
     return (int)msg.wParam;
 }

@@ -93,9 +93,6 @@
   <ItemGroup>
     <ClCompile Include="RBHook.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="RBTray.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
