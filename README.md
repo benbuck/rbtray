@@ -6,7 +6,7 @@ RBTray is a small Windows program that runs in the background and allows almost 
 - Shift-Right-Clicking on its title bar
 - Using the Windows-Alt-Down hotkey
 
-Note that not all all of these methods will work for every window, so please use whichever one works for your needs.
+Note that not all of these methods will work for every window, so please use whichever one works for your needs.
 
 RBTray is free, open source, and is distributed under the terms of the [GNU General Public Licence](http://www.gnu.org/copyleft/gpl.html).
 
@@ -39,7 +39,7 @@ select Restore Window.
 ## Exiting
 
 Right click on any tray icon created by RBTray and click Exit RBTray in the
-popup menu, or run RBTray.exe with the --exit parameter.
+popup menu, or run RBTray.exe with the `--exit` parameter.
 
 ## Change history
 
