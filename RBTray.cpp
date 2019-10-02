@@ -71,10 +71,10 @@ static bool AddToTray(int i) {
     nid.hIcon            = GetWindowIcon(_hwndItems[i]);
     GetWindowText(_hwndItems[i], nid.szTip, sizeof(nid.szTip) / sizeof(nid.szTip[0]));
     nid.uVersion         = NOTIFYICON_VERSION;
-    if (!SUCCEEDED(Shell_NotifyIcon(NIM_ADD, &nid))) {
+    if (!Shell_NotifyIcon(NIM_ADD, &nid)) {
         return false;
     }
-    if (!SUCCEEDED(Shell_NotifyIcon(NIM_SETVERSION, &nid))) {
+    if (!Shell_NotifyIcon(NIM_SETVERSION, &nid)) {
         Shell_NotifyIcon(NIM_DELETE, &nid);
         return false;
     }
@@ -119,7 +119,7 @@ static bool RemoveFromTray(int i) {
     nid.cbSize = NOTIFYICONDATA_V2_SIZE;
     nid.hWnd   = _hwndHook;
     nid.uID    = (UINT)i;
-    if (!SUCCEEDED(Shell_NotifyIcon(NIM_DELETE, &nid))) {
+    if (!Shell_NotifyIcon(NIM_DELETE, &nid)) {
         return false;
     }
     return true;
