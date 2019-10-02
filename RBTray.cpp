@@ -306,9 +306,19 @@ LRESULT CALLBACK HookWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) 
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE /*hPrevInstance*/, _In_ LPSTR /*szCmdLine*/, _In_ int /*iCmdShow*/) {
     _hInstance = hInstance;
+
+    int argc;
+    LPWSTR * argv = CommandLineToArgvW(GetCommandLineW(), &argc);
+    bool shouldExit = false;
+    for (int a = 0; a < argc; ++a) {
+        if (!wcscmp(argv[a], L"--exit")) {
+            shouldExit = true;
+        }
+    }
+
     _hwndHook = FindWindow(NAME, NAME);
     if (_hwndHook) {
-        if (strstr(szCmdLine, "--exit")) {
+        if (shouldExit) {
             SendMessage(_hwndHook, WM_CLOSE, 0, 0);
         } else {
             MessageBox(NULL, L"RBTray is already running.", L"RBTray", MB_OK | MB_ICONINFORMATION);
