@@ -81,11 +81,21 @@ LRESULT CALLBACK CallWndProcRet(int nCode, WPARAM wParam, LPARAM lParam) {
         {
             PostMessage(FindWindow(NAME, NAME), WM_REFRTRAY, 0, (LPARAM)msg->hwnd);
         }
+
+        //if ((msg->message == WM_SYSCOMMAND)) {// && (msg->wParam == SC_MINIMIZE)) {
+        //    DEBUG_PRINTF("%s(%d): minimize\n", __FUNCTION__, __LINE__);
+        //    WCHAR text[256];
+        //    GetWindowText(msg->hwnd, text, sizeof(text) / sizeof(text[0]));
+        //    if (wcsstr(text, L"Notepad")) {
+        //        //PostMessage(FindWindow(NAME, NAME), WM_ADDTRAY, 0, (LPARAM)msg->hwnd);
+        //    }
+        //}
     }
     return CallNextHookEx(_hWndProcRet, nCode, wParam, lParam);
 }
 
 BOOL DLLIMPORT RegisterHook(HMODULE hLib) {
+    //DEBUG_PRINTF("%s(%d): register hook\n", __FUNCTION__, __LINE__);
     _hMouse = SetWindowsHookEx(WH_MOUSE, (HOOKPROC)MouseProc, hLib, 0);
     _hWndProcRet = SetWindowsHookEx(WH_CALLWNDPROCRET, (HOOKPROC)CallWndProcRet, hLib, 0);
     if ((_hMouse == NULL) || (_hWndProcRet == NULL)) {
@@ -96,6 +106,7 @@ BOOL DLLIMPORT RegisterHook(HMODULE hLib) {
 }
 
 void DLLIMPORT UnRegisterHook() {
+    //DEBUG_PRINTF("%s(%d): unregister hook\n", __FUNCTION__, __LINE__);
     if (_hMouse) {
         UnhookWindowsHookEx(_hMouse);
         _hMouse = NULL;

@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Change history
 
+## [4.9] fork (2019-Oct-02) - Benbuck Nason
+  - Improved documentation.
+  - Clearer license/copyright notices.
+  - Better error checking.
+  - Better command line parsing.
+
 ## [4.8] fork (2018-Jul-27) - Benbuck Nason
   - Don't minimize desktop/taskbar/etc.
   - Return correct value from WinMain.
@@ -52,7 +58,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Won't minimize MDI child windows.
   - Other small fixes and reorganized code.
 
-[Unreleased]: https://github.com/benbuck/rbtray/compare/v4.8...HEAD
+[Unreleased]: https://github.com/benbuck/rbtray/compare/v4.9...HEAD
+[4.9]: https://github.com/benbuck/rbtray/compare/v4.8...v4.9
 [4.8]: https://github.com/benbuck/rbtray/compare/v4.7...v4.8
 [4.7]: https://github.com/benbuck/rbtray/compare/v4.6...v4.7
 [4.6]: https://github.com/benbuck/rbtray/compare/v4.5...v4.6
