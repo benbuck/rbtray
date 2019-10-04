@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Change history
 
+## [4.10] fork (2019-Oct-03) - Benbuck Nason
+  - Fix missing tray icon issue (thanks to [Andrzej Włoszczyński](https://github.com/Andrzej-W))
+
 ## [4.9] fork (2019-Oct-02) - Benbuck Nason
   - Improved documentation.
   - Clearer license/copyright notices.
@@ -58,7 +61,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Won't minimize MDI child windows.
   - Other small fixes and reorganized code.
 
-[Unreleased]: https://github.com/benbuck/rbtray/compare/v4.9...HEAD
+[Unreleased]: https://github.com/benbuck/rbtray/compare/v4.10...HEAD
+[4.10]: https://github.com/benbuck/rbtray/compare/v4.9...v4.10
 [4.9]: https://github.com/benbuck/rbtray/compare/v4.8...v4.9
 [4.8]: https://github.com/benbuck/rbtray/compare/v4.7...v4.8
 [4.7]: https://github.com/benbuck/rbtray/compare/v4.6...v4.7
