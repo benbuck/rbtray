@@ -10,11 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Change history
 
 ## [4.10] fork (2019-Oct-03) - Benbuck Nason
-  - Fix missing tray icon issue (thanks to [Andrzej Włoszczyński](https://github.com/Andrzej-W))
+  - Fix missing tray icon issue (thanks to [Andrzej Włoszczyński](https://github.com/Andrzej-W)).
 
 ## [4.9] fork (2019-Oct-02) - Benbuck Nason
   - Improved documentation.
-  - Clearer license/copyright notices.
+  - Clearer license/copyright notices (thanks to [Hugo Locurcio](https://github.com/Calinou)).
   - Better error checking.
   - Better command line parsing.
 
