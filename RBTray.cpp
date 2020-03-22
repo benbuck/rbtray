@@ -292,9 +292,9 @@ LRESULT CALLBACK HookWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) 
                     RestoreWindowFromTray(_hwndItems[i]);
                 }
             }
-			if (_hLib) {
-				UnRegisterHook();
-				FreeLibrary(_hLib);
+            if (_hLib) {
+                UnRegisterHook();
+                FreeLibrary(_hLib);
 			}
             PostQuitMessage(0);
             break;
@@ -323,7 +323,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE /*hPrevInstance*
         if (!wcscmp(argv[a], L"--exit")) {
             shouldExit = true;
         }
-		if (!wcscmp(argv[a], L"--no-hook")) {
+        if (!wcscmp(argv[a], L"--no-hook")) {
             useHook = false;
         }
     }
@@ -338,16 +338,16 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE /*hPrevInstance*
         return 0;
     }
 
-	if (useHook) {
-		if (!(_hLib = LoadLibrary(L"RBHook.dll"))) {
-			MessageBox(NULL, L"Error loading RBHook.dll.", L"RBTray", MB_OK | MB_ICONERROR);
-			return 0;
-		}
-		if (!RegisterHook(_hLib)) {
-			MessageBox(NULL, L"Error setting hook procedure.", L"RBTray", MB_OK | MB_ICONERROR);
-			return 0;
-		}
-	}
+    if (useHook) {
+        if (!(_hLib = LoadLibrary(L"RBHook.dll"))) {
+            MessageBox(NULL, L"Error loading RBHook.dll.", L"RBTray", MB_OK | MB_ICONERROR);
+            return 0;
+        }
+        if (!RegisterHook(_hLib)) {
+            MessageBox(NULL, L"Error setting hook procedure.", L"RBTray", MB_OK | MB_ICONERROR);
+            return 0;
+        }
+    }
 
     WNDCLASS wc;
     wc.style         = 0;
