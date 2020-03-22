@@ -36,6 +36,12 @@ program's window, single-click the program's icon in the tray. Alternatively,
 you can Right-click on the tray icon which should bring up a popup menu, then
 select Restore Window.
 
+In some cases the first two methods cause problems with other software because
+of they way they integrate into Windows using a hook to intercept mouse events.
+In this case, you can use the `--no-hook` option, which means that only the
+last method of using a hotkey will work. Also the RBHook.dll isn't needed since
+it only exists to support the mouse event hook.
+
 ## Exiting
 
 Right click on any tray icon created by RBTray and click Exit RBTray in the
