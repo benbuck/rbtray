@@ -1,14 +1,17 @@
 # RBTray
 
-RBTray is a small Windows program that runs in the background and allows almost any window to be minimized to the system tray by:
+RBTray is a small Windows program that runs in the background and allows almost
+any window to be minimized to the system tray by:
 
 - Right-Clicking its minimize button
 - Shift-Right-Clicking on its title bar
 - Using the Windows-Alt-Down hotkey
 
-Note that not all of these methods will work for every window, so please use whichever one works for your needs.
+Note that not all of these methods will work for every window, so please use
+whichever one works for your needs.
 
-RBTray is free, open source, and is distributed under the terms of the [GNU General Public Licence](http://www.gnu.org/copyleft/gpl.html).
+RBTray is free, open source, and is distributed under the terms of the [GNU
+General Public Licence](http://www.gnu.org/copyleft/gpl.html).
 
 ## Download
 
@@ -20,8 +23,8 @@ RBTray is free, open source, and is distributed under the terms of the [GNU Gene
 
 Download either the 32-bit or 64-bit binaries (depending on your OS) to a folder,
 for example "C:\Program Files\RBTray".  Double click RBTray.exe to start it.  If
-you want it to automatically start after you reboot, create a shortcut to RBTray.exe
-in your Start menu's Startup group.
+you want it to automatically start after you reboot, create a shortcut to
+RBTray.exe in your Start menu's Startup group.
 
 ## Using
 
@@ -47,9 +50,18 @@ it only exists to support the mouse event hook.
 Right click on any tray icon created by RBTray and click Exit RBTray in the
 popup menu, or run RBTray.exe with the `--exit` parameter.
 
+## Authors
+
+Nikolay Redko: http://rbtray.sourceforge.net/, https://github.com/nredko
+
+J.D. Purcell: http://www.moitah.net/, https://github.com/jdpurcell
+
+Benbuck Nason: https://github.com/benbuck
+
 ## Other
 
-For original forum, bug tracker, etc. see [RBTray SourceForge project page](http://sourceforge.net/projects/rbtray/).
+For original forum, bug tracker, etc. see [RBTray SourceForge project page]
+(http://sourceforge.net/projects/rbtray/).
 
 Copyright &copy; 1998-2011 Nikolay Redko, J.D. Purcell
 
