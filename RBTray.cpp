@@ -295,7 +295,7 @@ LRESULT CALLBACK HookWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) 
             if (_hLib) {
                 UnRegisterHook();
                 FreeLibrary(_hLib);
-			}
+            }
             PostQuitMessage(0);
             break;
         default:
@@ -318,7 +318,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE /*hPrevInstance*
     int argc;
     LPWSTR * argv = CommandLineToArgvW(GetCommandLineW(), &argc);
     bool shouldExit = false;
-	bool useHook = true;
+    bool useHook = true;
     for (int a = 0; a < argc; ++a) {
         if (!wcscmp(argv[a], L"--exit")) {
             shouldExit = true;
