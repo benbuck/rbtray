@@ -56,7 +56,7 @@ CAPTION "About RBTray"
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     ICON            IDI_RBTRAY,IDC_STATIC,7,7,20,20
-    LTEXT           "RBTray 4.10\nhttps://github.com/benbuck/rbtray",IDC_STATIC,38,7,151,20
+    LTEXT           "RBTray 4.11\nhttps://github.com/benbuck/rbtray",IDC_STATIC,38,7,151,20
     LTEXT           "This program is distributed under the GNU General Public License.",IDC_STATIC,38,27,151,20
     LTEXT           "Copyright (c) 1998-2011",IDC_STATIC,38,47,151,10
     LTEXT           "Nikolay Redko\r\nhttp://rbtray.sourceforge.net/",IDC_STATIC,38,56,151,20
@@ -102,8 +102,8 @@ IDI_RBTRAY              ICON                    "RBTray.ico"
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 4,10,0,0
- PRODUCTVERSION 4,10,0,0
+ FILEVERSION 4,11,0,0
+ PRODUCTVERSION 4,11,0,0
  FILEFLAGSMASK 0x17L
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -119,12 +119,12 @@ BEGIN
         BLOCK "040904b0"
         BEGIN
             VALUE "FileDescription", "RBTray"
-            VALUE "FileVersion", "4.10.0.0"
+            VALUE "FileVersion", "4.11.0.0"
             VALUE "InternalName", "RBTray"
             VALUE "LegalCopyright", "Copyright (c) 1998-2011 Nikolay Redko, J.D. Purcell; Copyright (c) 2015 Benbuck Nason"
             VALUE "OriginalFilename", "RBTray.exe"
             VALUE "ProductName", "RBTray"
-            VALUE "ProductVersion", "4.10.0.0"
+            VALUE "ProductVersion", "4.11.0.0"
         END
     END
     BLOCK "VarFileInfo"

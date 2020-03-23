@@ -9,6 +9,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Change history
 
+## [4.11] fork (2020-Mar-23) - Benbuck Nason
+  - Formatting improvements to RBTray.rc.
+  - Fix incorrect versions in RBTray.rc.
+  - Minor formatting improvements to README.md.
+  - Add --no-hook documentation to README.md.
+  - Added --no-hook command line option (thanks to [Ondrej Petrzilka](https://github.com/OndrejPetrzilka)).
+
 ## [4.10] fork (2019-Oct-03) - Benbuck Nason
   - Fix missing tray icon issue (thanks to [Andrzej Włoszczyński](https://github.com/Andrzej-W)).
 
@@ -61,7 +68,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Won't minimize MDI child windows.
   - Other small fixes and reorganized code.
 
-[Unreleased]: https://github.com/benbuck/rbtray/compare/v4.10...HEAD
+[Unreleased]: https://github.com/benbuck/rbtray/compare/v4.11...HEAD
+[4.11]: https://github.com/benbuck/rbtray/compare/v4.10...v4.11
 [4.10]: https://github.com/benbuck/rbtray/compare/v4.9...v4.10
 [4.9]: https://github.com/benbuck/rbtray/compare/v4.8...v4.9
 [4.8]: https://github.com/benbuck/rbtray/compare/v4.7...v4.8
