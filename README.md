@@ -22,9 +22,12 @@ General Public Licence](http://www.gnu.org/copyleft/gpl.html).
 ## Installing
 
 Download either the 32-bit or 64-bit binaries (depending on your OS) to a folder,
-for example "C:\Program Files\RBTray".  Double click RBTray.exe to start it.  If
-you want it to automatically start after you reboot, create a shortcut to
-RBTray.exe in your Start menu's Startup group.
+for example "`C:\Program Files\RBTray`".  Double click RBTray.exe to start it. If
+you want it to automatically start after you reboot, create a shortcut to RBTray.exe in your Start menu's Startup group. 
+
+On Windows 10 that is located at `"C:\Users\YOUR_USERNAME_HERE\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup"`
+
+But a ***much*** quicker way to access it is to press "`WIN` + `R`" then type (or copy & paste) `shell:Startup`
 
 ## Using
 
