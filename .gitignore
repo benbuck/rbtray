@@ -12,9 +12,11 @@
 *.obj
 *.opendb
 *.pdb
+*.recipe
 *.res
 *.sdf
 *.suo
 *.tlog
 *.user
+*.FileListAbsolute.txt
 !/**/RBTray.exe
