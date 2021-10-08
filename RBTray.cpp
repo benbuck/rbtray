@@ -376,7 +376,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE /*hPrevInstance*
 
     WM_TASKBAR_CREATED = RegisterWindowMessage(L"TaskbarCreated");
 
-    BOOL registeredHotKey = RegisterHotKey(_hwndHook, 0, MOD_WIN | MOD_ALT, VK_DOWN);
+    BOOL registeredHotKey = RegisterHotKey(_hwndHook, 0, MOD_WIN | MOD_CONTROL, VK_DOWN);
     if (!registeredHotKey) {
         MessageBox(NULL, L"Couldn't register hotkey", L"RBTray", MB_OK | MB_ICONERROR);
     }
