@@ -5,7 +5,7 @@ any window to be minimized to the system tray by:
 
 - Right-Clicking its minimize button
 - Shift-Right-Clicking on its title bar
-- Using the Windows-Control-Down hotkey
+- Using the Windows-Alt-Control-Down hotkey
 
 Note that not all of these methods will work for every window, so please use
 whichever one works for your needs.
@@ -23,11 +23,14 @@ General Public Licence](http://www.gnu.org/copyleft/gpl.html).
 
 Download either the 32-bit or 64-bit binaries (depending on your OS) to a folder,
 for example "`C:\Program Files\RBTray`".  Double click RBTray.exe to start it. If
-you want it to automatically start after you reboot, create a shortcut to RBTray.exe in your Start menu's Startup group.
+you want it to automatically start after you reboot, create a shortcut to
+RBTray.exe in your Start menu's Startup group.
 
-On Windows 10 that is located at `"C:\Users\YOUR_USERNAME_HERE\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup"`
+On Windows 10 that is located at
+`"C:\Users\YOUR_USERNAME_HERE\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup"`
 
-But a ***much*** quicker way to access it is to press "`WIN` + `R`" then type (or copy & paste) `shell:Startup`
+But a ***much*** quicker way to access it is to press "`WIN` + `R`" then type
+(or copy & paste) `shell:Startup`
 
 ## Using
 
@@ -45,8 +48,8 @@ select Restore Window.
 In some cases the first two methods cause problems with other software because
 of they way they integrate into Windows using a hook to intercept mouse events.
 In this case, you can use the `--no-hook` option, which means that only the
-last method of using the Windows-Control-Down hotkey will work. Also in this
-case the RBHook.dll isn't needed since it only exists to support the mouse
+last method of using the Windows-Alt-Control-Down hotkey will work. Also in
+this case the RBHook.dll isn't needed since it only exists to support the mouse
 event hook.
 
 ## Exiting
