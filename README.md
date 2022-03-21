@@ -5,7 +5,7 @@ any window to be minimized to the system tray by:
 
 - Right-clicking its minimize button
 - Shift-right-clicking its title bar
-- Using the Windows-Alt-Control-Down hotkey
+- Using the Control-Alt-Down hotkey
 
 Note that not all of these methods will work for every window, so please use
 whichever one works for your needs.
@@ -38,7 +38,7 @@ To minimize a program to the system tray, you can use any of these methods:
 
 - Right-click with the mouse on the program's minimize button.
 - Hold down a Shift key while right-clicking on the program's title bar.
-- Pressing Windows-Alt-Control-Down on the keyboard (all at the same time).
+- Pressing Control-Alt-Down on the keyboard (all at the same time).
 
 This should create an icon for the window in the system tray. To restore the
 program's window, single-click the program's icon in the tray. Alternatively,
@@ -48,9 +48,9 @@ select **Restore Window**.
 In some cases, the first two methods cause problems with other software because
 of they way they integrate into Windows using a hook to intercept mouse events.
 In these cases, you can use the `--no-hook` option, which means that only the
-last method of using the Windows-Alt-Control-Down hotkey will work. Also in
-these cases the RBHook.dll isn't needed since it only exists to support the mouse
-event hook.
+last method of using the Control-Alt-Down hotkey will work. Also in this case
+the RBHook.dll isn't needed since it only exists to support the mouse event
+hook.
 
 ## Exiting
 
