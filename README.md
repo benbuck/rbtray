@@ -22,14 +22,14 @@ General Public Licence](http://www.gnu.org/copyleft/gpl.html).
 ## Installing
 
 Download either the 32-bit or 64-bit binaries (depending on your OS) to a folder,
-for example "`C:\Program Files\RBTray`".  Double-click RBTray.exe to start it. If
+for example "`C:\Program Files\RBTray`". Double click RBTray.exe to start it. If
 you want it to automatically start after you reboot, create a shortcut to
 RBTray.exe in your Start menu's Startup group.
 
 On Windows 10 that is located at
 `"C:\Users\YOUR_USERNAME_HERE\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup"`
 
-But a ***much*** quicker way to access it is to press "`WIN` + `R`" then type
+But a **_much_** quicker way to access it is to press "`WIN` + `R`" then type
 (or copy & paste) `shell:Startup`
 
 ## Using
@@ -59,16 +59,26 @@ popup menu, or run RBTray.exe with the `--exit` parameter.
 
 ## Authors
 
-Nikolay Redko: http://rbtray.sourceforge.net/, https://github.com/nredko
+Nikolay Redko: <http://rbtray.sourceforge.net/>, <https://github.com/nredko>
 
-J.D. Purcell: http://www.moitah.net/, https://github.com/jdpurcell
+J.D. Purcell: <http://www.moitah.net/>, <https://github.com/jdpurcell>
 
-Benbuck Nason: https://github.com/benbuck
+Benbuck Nason: <https://github.com/benbuck>
+
+## Contributors
+
+Dimitri Pappas <https://github.com/fragtion>
+
+Ondrej Petrzilka <https://github.com/OndrejPetrzilka>
+
+Andrzej Włoszczyński <https://github.com/Andrzej-W>
+
+Hugo Locurcio <https://github.com/Calinou>
 
 ## Other
 
 For original forum, bug tracker, etc. see [RBTray SourceForge project page]
-(https://sourceforge.net/projects/rbtray/).
+(<http://sourceforge.net/projects/rbtray/>).
 
 Copyright &copy; 1998-2011 Nikolay Redko, J.D. Purcell
 
