@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Change history
 
+## [4.14] fork (2023-Mar-20) - Benbuck Nason
+
+- Change hotkey to Control-Alt-Down for simplicity and compatibility.
+- Minor markdown cleanup/improvements.
+
 ## [4.13] fork (2021-Oct-09) - Benbuck Nason
 
 - Change hotkey to Windows-Alt-Control-Down for Windows 10 and 11 compatibility.
@@ -89,7 +94,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Won't minimize MDI child windows.
 - Other small fixes and reorganized code.
 
-[unreleased]: https://github.com/benbuck/rbtray/compare/v4.13...HEAD
+[unreleased]: https://github.com/benbuck/rbtray/compare/v4.14...HEAD
+[4.14]: https://github.com/benbuck/rbtray/compare/v4.13...v4.14
 [4.13]: https://github.com/benbuck/rbtray/compare/v4.12...v4.13
 [4.12]: https://github.com/benbuck/rbtray/compare/v4.11...v4.12
 [4.11]: https://github.com/benbuck/rbtray/compare/v4.10...v4.11
