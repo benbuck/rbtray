@@ -18,5 +18,6 @@
 *.suo
 *.tlog
 *.user
+*.zip
 *.FileListAbsolute.txt
 !/**/RBTray.exe
