@@ -106,13 +106,15 @@ static void MinimizeWindowToTray(HWND hwnd) {
     // can be called from inside ShowWindow before program window is actually hidden
     // and as a result RemoveWindowFromTray is called which immediately removes just
     // added tray icon.
+    ShowWindow(hwnd, SW_MINIMIZE);
     ShowWindow(hwnd, SW_HIDE);
 
     // Add icon to tray if it's not already there
     if (FindInTray(hwnd) == -1) {
         if (!AddWindowToTray(hwnd)) {
           // If there is something wrong with tray icon restore program window.
-          ShowWindow(hwnd, SW_SHOW);
+            ShowWindow(hwnd, SW_RESTORE);
+            ShowWindow(hwnd, SW_SHOW);
           SetForegroundWindow(hwnd);
           return;
         }
@@ -144,6 +146,7 @@ static bool RemoveWindowFromTray(HWND hwnd) {
 }
 
 static void RestoreWindowFromTray(HWND hwnd) {
+    ShowWindow(hwnd, SW_RESTORE);
     ShowWindow(hwnd, SW_SHOW);
     SetForegroundWindow(hwnd);
     RemoveWindowFromTray(hwnd);
