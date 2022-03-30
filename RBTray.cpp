@@ -170,6 +170,14 @@ static void CloseWindowFromTray(HWND hwnd) {
     }
 }
 
+void RestoreAllWindowsFromTray() {
+    for (int i = 0; i < MAXTRAYITEMS; i++) {
+        if (_hwndItems[i]) {
+            RestoreWindowFromTray(_hwndItems[i]);
+        }
+    }
+}
+
 void RefreshWindowInTray(HWND hwnd) {
     int i = FindInTray(hwnd);
     if (i == -1) {
@@ -198,11 +206,12 @@ void ExecuteMenu() {
         MessageBox(NULL, L"Error creating menu.", L"RBTray", MB_OK | MB_ICONERROR);
         return;
     }
-    AppendMenu(hMenu, MF_STRING, IDM_ABOUT,   L"About RBTray");
-    AppendMenu(hMenu, MF_STRING, IDM_EXIT,    L"Exit RBTray");
-    AppendMenu(hMenu, MF_SEPARATOR, 0, NULL); //--------------
-    AppendMenu(hMenu, MF_STRING, IDM_CLOSE,   L"Close Window");
-    AppendMenu(hMenu, MF_STRING, IDM_RESTORE, L"Restore Window");
+    AppendMenu(hMenu, MF_STRING, IDM_ABOUT,       L"About RBTray");
+    AppendMenu(hMenu, MF_STRING, IDM_EXIT,        L"Exit RBTray");
+    AppendMenu(hMenu, MF_SEPARATOR, 0, NULL);     //--------------
+    AppendMenu(hMenu, MF_STRING, IDM_CLOSE,       L"Close Window");
+    AppendMenu(hMenu, MF_STRING, IDM_RESTORE,     L"Restore Window");
+    AppendMenu(hMenu, MF_STRING, IDM_RESTORE_ALL, L"Restore All");
 
     GetCursorPos(&point);
     SetForegroundWindow(_hwndHook);
@@ -238,6 +247,9 @@ LRESULT CALLBACK HookWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) 
     switch (msg) {
         case WM_COMMAND:
             switch (LOWORD(wParam)) {
+                case IDM_RESTORE_ALL:
+                    RestoreAllWindowsFromTray();
+                    break;
                 case IDM_RESTORE:
                     RestoreWindowFromTray(_hwndForMenu);
                     break;
@@ -291,26 +303,21 @@ LRESULT CALLBACK HookWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) 
             }
 
             if (wParam == HK_SHOWWINDOW) {
-                for (int i = 0; i < MAXTRAYITEMS; i++) {
-                    if (_hwndItems[i]) {
-                        RestoreWindowFromTray(_hwndItems[i]);
-                    }
-                }
+                RestoreAllWindowsFromTray();
             }
             break;
         }
-        case WM_DESTROY:
-            for (int i = 0; i < MAXTRAYITEMS; i++) {
-                if (_hwndItems[i]) {
-                    RestoreWindowFromTray(_hwndItems[i]);
-                }
-            }
-            if (_hLib) {
+        case WM_DESTROY: {
+            RestoreAllWindowsFromTray();
+
+            if (_hLib)
+            {
                 UnRegisterHook();
                 FreeLibrary(_hLib);
             }
             PostQuitMessage(0);
             break;
+        }
         default:
             if (msg == WM_TASKBAR_CREATED) {
                 for (int i = 0; i < MAXTRAYITEMS; i++) {
