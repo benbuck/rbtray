@@ -389,12 +389,12 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE /*hPrevInstance*
 
     WM_TASKBAR_CREATED = RegisterWindowMessage(L"TaskbarCreated");
 
-    BOOL registeredACDHotKey = RegisterHotKey(_hwndHook, HK_HIDEWINDOW, MOD_ALT | MOD_CONTROL, VK_DOWN);
+    BOOL registeredACDHotKey = RegisterHotKey(_hwndHook, HK_HIDEWINDOW, MOD_ALT | MOD_CONTROL | MOD_NOREPEAT, VK_DOWN);
     if (!registeredACDHotKey) {
         MessageBox(NULL, L"Couldn't register ACD hotkey", L"RBTray", MB_OK | MB_ICONERROR);
     }
 
-    BOOL registeredACUHotKey = RegisterHotKey(_hwndHook, HK_SHOWWINDOW, MOD_ALT | MOD_CONTROL, VK_UP);
+    BOOL registeredACUHotKey = RegisterHotKey(_hwndHook, HK_SHOWWINDOW, MOD_ALT | MOD_CONTROL | MOD_NOREPEAT, VK_UP);
     if (!registeredACUHotKey) {
         MessageBox(NULL, L"Couldn't register ACU hotkey", L"RBTray", MB_OK | MB_ICONERROR);
     }
