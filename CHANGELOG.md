@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Change history
 
-## [4.14] fork (2023-Mar-20) - Benbuck Nason
+## [4.14] fork (2022-Mar-20) - Benbuck Nason
 
 - Change hotkey to Control-Alt-Down for simplicity and compatibility.
 - Minor markdown cleanup/improvements.
