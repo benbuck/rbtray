@@ -25,6 +25,8 @@
 #include "resource.h"
 
 #define MAXTRAYITEMS 64
+#define HK_HIDEWINDOW 0
+#define HK_SHOWWINDOW 1
 
 static UINT WM_TASKBAR_CREATED;
 
@@ -106,12 +108,14 @@ static void MinimizeWindowToTray(HWND hwnd) {
     // can be called from inside ShowWindow before program window is actually hidden
     // and as a result RemoveWindowFromTray is called which immediately removes just
     // added tray icon.
+    ShowWindow(hwnd, SW_MINIMIZE);
     ShowWindow(hwnd, SW_HIDE);
 
     // Add icon to tray if it's not already there
     if (FindInTray(hwnd) == -1) {
         if (!AddWindowToTray(hwnd)) {
           // If there is something wrong with tray icon restore program window.
+          ShowWindow(hwnd, SW_RESTORE);
           ShowWindow(hwnd, SW_SHOW);
           SetForegroundWindow(hwnd);
           return;
@@ -144,6 +148,7 @@ static bool RemoveWindowFromTray(HWND hwnd) {
 }
 
 static void RestoreWindowFromTray(HWND hwnd) {
+    ShowWindow(hwnd, SW_RESTORE);
     ShowWindow(hwnd, SW_SHOW);
     SetForegroundWindow(hwnd);
     RemoveWindowFromTray(hwnd);
@@ -272,18 +277,27 @@ LRESULT CALLBACK HookWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) 
             break;
         case WM_HOTKEY:
         {
-            HWND fgWnd = GetForegroundWindow();
-            if (!fgWnd)
-                break;
+            if (wParam == HK_HIDEWINDOW) {
+                HWND fgWnd = GetForegroundWindow();
+                if (!fgWnd)
+                    break;
 
-            LONG style = GetWindowLong(fgWnd, GWL_STYLE);
-            if (!(style & WS_MINIMIZEBOX)) {
-                // skip, no minimize box
-                break;
+                LONG style = GetWindowLong(fgWnd, GWL_STYLE);
+                if (!(style & WS_MINIMIZEBOX)) {
+                    // skip, no minimize box
+                    break;
+                }
+
+                MinimizeWindowToTray(fgWnd);
             }
 
-            MinimizeWindowToTray(fgWnd);
-
+            if (wParam == HK_SHOWWINDOW) {
+                for (int i = 0; i < MAXTRAYITEMS; i++) {
+                    if (_hwndItems[i]) {
+                        RestoreWindowFromTray(_hwndItems[i]);
+                    }
+                }
+            }
             break;
         }
         case WM_DESTROY:
@@ -376,9 +390,14 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE /*hPrevInstance*
 
     WM_TASKBAR_CREATED = RegisterWindowMessage(L"TaskbarCreated");
 
-    BOOL registeredHotKey = RegisterHotKey(_hwndHook, 0, MOD_ALT | MOD_CONTROL, VK_DOWN);
-    if (!registeredHotKey) {
-        MessageBox(NULL, L"Couldn't register hotkey", L"RBTray", MB_OK | MB_ICONERROR);
+    BOOL registeredACDHotKey = RegisterHotKey(_hwndHook, HK_HIDEWINDOW, MOD_ALT | MOD_CONTROL, VK_DOWN);
+    if (!registeredACDHotKey) {
+        MessageBox(NULL, L"Couldn't register ACD hotkey", L"RBTray", MB_OK | MB_ICONERROR);
+    }
+
+    BOOL registeredACUHotKey = RegisterHotKey(_hwndHook, HK_SHOWWINDOW, MOD_ALT | MOD_CONTROL, VK_UP);
+    if (!registeredACUHotKey) {
+        MessageBox(NULL, L"Couldn't register ACU hotkey", L"RBTray", MB_OK | MB_ICONERROR);
     }
 
     MSG msg;
@@ -387,8 +406,12 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE /*hPrevInstance*
         DispatchMessage(&msg);
     }
 
-    if (registeredHotKey) {
-        UnregisterHotKey(_hwndHook, 0);
+    if (registeredACDHotKey) {
+        UnregisterHotKey(_hwndHook, HK_HIDEWINDOW);
+    }
+
+    if (registeredACUHotKey) {
+        UnregisterHotKey(_hwndHook, HK_SHOWWINDOW);
     }
 
     return (int)msg.wParam;
