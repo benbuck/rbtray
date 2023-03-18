@@ -20,6 +20,10 @@
 //
 // ****************************************************************************
 
+#include <fstream> // For the config file
+#include <sstream> // For the config file
+#include <map> // For the config file
+
 #include <windows.h>
 #include "RBTray.h"
 #include "resource.h"
@@ -312,6 +316,76 @@ LRESULT CALLBACK HookWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) 
     return DefWindowProc(hwnd, msg, wParam, lParam);
 }
 
+bool ReadHotkeyConfig(UINT &modifier, UINT &key) {
+    std::ifstream configFile("rbtray.ini");
+    if (!configFile) {
+        return false;
+    }
+
+    UINT tempModifier = 0;
+    UINT tempKey = 0;
+
+    std::string line;
+    while (std::getline(configFile, line)) {
+        // Ignore comment lines
+        bool isWhitespace = true;
+        for (char c : line) {
+            if (!std::isspace(static_cast<unsigned char>(c))) {
+                isWhitespace = false;
+                break;
+            }
+        }
+        
+        if (line.empty() || line[0] == ';' || isWhitespace) {
+            continue;
+        }
+
+        if (line.find("Modifier") != std::string::npos) {
+            std::istringstream lineStream(line);
+            std::string keyName, value;
+            std::getline(lineStream, keyName, '=');
+            std::getline(lineStream, value);
+
+            if (value == "Alt+Shift") {
+                tempModifier = MOD_ALT | MOD_SHIFT;
+            } else if (value == "Alt+Control") {
+                tempModifier = MOD_ALT | MOD_CONTROL;
+            } else {
+                return false;
+            }
+        }
+
+        if (line.find("Key") != std::string::npos) {
+            std::istringstream lineStream(line);
+            std::string keyName, value;
+            std::getline(lineStream, keyName, '=');
+            std::getline(lineStream, value);
+
+            if (value == "Down") {
+                tempKey = VK_DOWN;
+            } else if (value == "Up") {
+                tempKey = VK_UP;
+            } else if (value == "M") {
+                tempKey = 'M';
+            } else {
+                return false;
+            }
+        }
+    }
+
+    configFile.close();
+
+    if (tempModifier != 0 && tempKey != 0) {
+        modifier = tempModifier;
+        key = tempKey;
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
+
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE /*hPrevInstance*/, _In_ LPSTR /*szCmdLine*/, _In_ int /*iCmdShow*/) {
     _hInstance = hInstance;
 
@@ -376,10 +450,24 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE /*hPrevInstance*
 
     WM_TASKBAR_CREATED = RegisterWindowMessage(L"TaskbarCreated");
 
-    BOOL registeredHotKey = RegisterHotKey(_hwndHook, 0, MOD_ALT | MOD_SHIFT, VK_DOWN);
-    if (!registeredHotKey) {
-        MessageBox(NULL, L"Couldn't register hotkey (Alt+Shift+Down)", L"RBTray", MB_OK | MB_ICONERROR);
+    BOOL registeredHotKey = FALSE;
+    UINT modifier = 0;
+    UINT key = 0;
+    if (ReadHotkeyConfig(modifier, key)) {
+        registeredHotKey = RegisterHotKey(_hwndHook, 0, modifier, key);
+    } else {
+        MessageBox(NULL, L"Error reading the hotkey configuration from rbtray.ini", L"RBTray", MB_OK | MB_ICONERROR);
+        
+        // Set default values
+        modifier = MOD_ALT | MOD_SHIFT;
+        key = VK_DOWN;
+        registeredHotKey = RegisterHotKey(_hwndHook, 0, modifier, key);
     }
+
+    if (!registeredHotKey) {
+        MessageBox(NULL, L"Couldn't register hotkey", L"RBTray", MB_OK | MB_ICONERROR);
+    }
+
 
     MSG msg;
     while (GetMessage(&msg, nullptr, 0, 0)) {
