@@ -96,9 +96,9 @@ Andrzej Włoszczyński <https://github.com/Andrzej-W>
 
 Hugo Locurcio <https://github.com/Calinou>
 
-Thiago V. S. Coelho: https://github.com/thiagovscoelho
+Thiago V. S. Coelho: <https://github.com/thiagovscoelho>
 
-Sk. Mashrur Sourov: https://github.com/SMSourov
+Sk. Mashrur Sourov: <https://github.com/SMSourov>
 
 ## Other
 
