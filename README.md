@@ -10,7 +10,7 @@ Note that not all of these methods will work for every window, so please use whi
 
 RBTray is free, open source, and is distributed under the terms of the [GNU General Public Licence](http://www.gnu.org/copyleft/gpl.html).
 
-Note: We are not the main author of this program. So, no bug request will be accepted. We made the following changes:
+Note: We made the following changes:
 
  - Added customizable hot key feature.
  - Made appropriate installers for both 32 and 64 bit OS.
