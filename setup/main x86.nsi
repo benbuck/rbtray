@@ -128,19 +128,26 @@ Section "Hook method" sec02
     # Create a start menu shortcut for hook method
     CreateShortCut "$SMPROGRAMS\${APP_NAME}\${APP_NAME}.lnk" "$INSTDIR\RBTray.exe"
 
+    # Create a startup shortcut for the hook method. It will be enabled by default
+    CreateShortCut "$SMPROGRAMS\Startup\RBTray.lnk" "$INSTDIR\RBTray.exe"
+
     # Create an auto run task in hook method
-    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Run" "${APP_NAME}" "$\"$INSTDIR\RBTray.exe$\""
+    ; WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Run" "${APP_NAME}" "$\"$INSTDIR\RBTray.exe$\""
 SectionEnd
 
 # Next options should be optional. Use "/o" to make them optional
 Section /o "No hook method" sec03
     # Create a shortcut in the install directory for no hook method
-    CreateShortCut "$INSTDIR\No Hook.lnk" "$INSTDIR\RBTray.exe" "--no-hook"
+    CreateShortCut "$INSTDIR\RBTray - No Hook.lnk" "$INSTDIR\RBTray.exe" "--no-hook"
+
     # Create a start menu shortcut for no hook method
     CreateShortCut "$SMPROGRAMS\${APP_NAME}\RBTray - No Hook.lnk" "$INSTDIR\RBTray.exe" "--no-hook"
 
+    # Create a startup shortcut for the no hook method. It will be enabled by default
+    CreateShortCut "$SMPROGRAMS\Startup\RBTray - No Hook.lnk" "$INSTDIR\RBTray.exe" "--no-hook"
+
     # Create an auto run task in no hook method 
-    WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Run" "${APP_NAME} no hook" "$\"$INSTDIR\RBTray.exe$\" --no-hook"
+    ; WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Run" "${APP_NAME} no hook" "$\"$INSTDIR\RBTray.exe$\" --no-hook"
 SectionEnd
 
 Section /o "No autostart" sec04
@@ -148,7 +155,7 @@ Section /o "No autostart" sec04
     CreateShortCut "$SMPROGRAMS\${APP_NAME}\${APP_NAME}.lnk" "$INSTDIR\RBTray.exe"
 
     # Create a shortcut in the install directory for no hook method
-    CreateShortCut "$INSTDIR\No Hook.lnk" "$INSTDIR\RBTray.exe" "--no-hook"
+    CreateShortCut "$INSTDIR\RBTray - No Hook.lnk" "$INSTDIR\RBTray.exe" "--no-hook"
     
     # Create a start menu shortcut for no hook method
     CreateShortCut "$SMPROGRAMS\${APP_NAME}\RBTray - No Hook.lnk" "$INSTDIR\RBTray.exe" "--no-hook"
@@ -211,12 +218,17 @@ Section "Uninstall"
     Delete "$INSTDIR\RBTray.exe"
     Delete "$INSTDIR\README - RBTray.pdf"
     Delete "$INSTDIR\Uninstall.exe"
-    Delete "$INSTDIR\No Hook.lnk"
+    Delete "$INSTDIR\RBTray - No Hook.lnk"
+    Delete "$INSTDIR\rbtray.ini"
     Delete "$INSTDIR\Stop.lnk"
 
 
     # Remove the installation directory
     RMDir "$INSTDIR"
+
+    # Remove the startup shortcuts
+    Delete "$SMPROGRAMS\Startup\RBTray.lnk"
+    Delete "$SMPROGRAMS\Startup\RBTray - No Hook.lnk"
 
     # Remove the shortcut from the start menu
     Delete "$SMPROGRAMS\${APP_NAME}\${APP_NAME}.lnk"
@@ -226,8 +238,8 @@ Section "Uninstall"
 
     # Remove the uninstall information from the registry
     DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_NAME}"
-    DeleteRegValue HKLM "Software\Microsoft\Windows\CurrentVersion\Run" "${APP_NAME} no hook"
-    DeleteRegValue HKLM "Software\Microsoft\Windows\CurrentVersion\Run" "${APP_NAME}"
+    ; DeleteRegValue HKLM "Software\Microsoft\Windows\CurrentVersion\Run" "${APP_NAME} no hook"
+    ; DeleteRegValue HKLM "Software\Microsoft\Windows\CurrentVersion\Run" "${APP_NAME}"
 
     SetRebootFlag true
 
