@@ -42,7 +42,7 @@ LRESULT CALLBACK MouseProc(int nCode, WPARAM wParam, LPARAM lParam) {
             if (info->wHitTestCode == HTCLIENT) {
                 //DEBUG_PRINTF("%s(%d): ignoring client hit test code for non-client message\n", __FUNCTION__, __LINE__);
             } else {
-                BOOL shiftKeyDown = (GetKeyState(VK_SHIFT) & 0x8000) ? TRUE : FALSE;
+                BOOL shiftKeyDown = (GetAsyncKeyState(VK_SHIFT) & 0x8000) ? TRUE : FALSE;
                 BOOL isHit = (info->wHitTestCode == HTMINBUTTON) || ((info->wHitTestCode == HTCAPTION) && shiftKeyDown);
                 //DEBUG_PRINTF("%s(%d): shift %s, hit %s\n", __FUNCTION__, __LINE__, shiftKeyDown ? "yes" : "no", isHit ? "yes" : "no");
                 if ((wParam == WM_NCRBUTTONDOWN) && isHit) {
