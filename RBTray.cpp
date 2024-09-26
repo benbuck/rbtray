@@ -90,33 +90,36 @@ static bool AddWindowToTray(HWND hwnd) {
     return AddToTray(i);
 }
 
-static void MinimizeWindowToTray(HWND hwnd) {
+static bool MinimizeWindowToTray(HWND hwnd)
+{
     // Don't minimize MDI child windows
-    if ((UINT)GetWindowLongPtr(hwnd, GWL_EXSTYLE) & WS_EX_MDICHILD) {
-        return;
+    if ((UINT)GetWindowLongPtr(hwnd, GWL_EXSTYLE) & WS_EX_MDICHILD)
+    {
+        return false;
     }
 
     // If hwnd is a child window, find parent window (e.g. minimize button in
     // Office 2007 (ribbon interface) is in a child window)
-    if ((UINT)GetWindowLongPtr(hwnd, GWL_STYLE) & WS_CHILD) {
+    if ((UINT)GetWindowLongPtr(hwnd, GWL_STYLE) & WS_CHILD)
+    {
         hwnd = GetAncestor(hwnd, GA_ROOT);
     }
 
-    // Hide window before AddWindowToTray call because sometimes RefreshWindowInTray
-    // can be called from inside ShowWindow before program window is actually hidden
-    // and as a result RemoveWindowFromTray is called which immediately removes just
-    // added tray icon.
-    ShowWindow(hwnd, SW_HIDE);
-
     // Add icon to tray if it's not already there
-    if (FindInTray(hwnd) == -1) {
-        if (!AddWindowToTray(hwnd)) {
-          // If there is something wrong with tray icon restore program window.
-          ShowWindow(hwnd, SW_SHOW);
-          SetForegroundWindow(hwnd);
-          return;
+    if (FindInTray(hwnd) == -1)
+    {
+        if (!AddWindowToTray(hwnd))
+        {
+            // If there is something wrong with tray icon restore program window.
+            ShowWindow(hwnd, SW_SHOW);
+            SetForegroundWindow(hwnd);
+
+            return false;
         }
     }
+
+    // Hide window
+    return ShowWindow(hwnd, SW_HIDE);
 }
 
 static bool RemoveFromTray(int i) {
@@ -190,12 +193,12 @@ void ExecuteMenu() {
 
     hMenu = CreatePopupMenu();
     if (!hMenu) {
-        MessageBox(NULL, L"Error creating menu.", L"RBTray", MB_OK | MB_ICONERROR);
+        MessageBox(NULL, L"Error creating menu.", APP_NAME, MB_OK | MB_ICONERROR);
         return;
     }
     AppendMenu(hMenu, MF_STRING, IDM_ABOUT,   L"About RBTray");
     AppendMenu(hMenu, MF_STRING, IDM_EXIT,    L"Exit RBTray");
-    AppendMenu(hMenu, MF_SEPARATOR, 0, NULL); //--------------
+    AppendMenu(hMenu, MF_SEPARATOR, 0, NULL);
     AppendMenu(hMenu, MF_STRING, IDM_CLOSE,   L"Close Window");
     AppendMenu(hMenu, MF_STRING, IDM_RESTORE, L"Restore Window");
 
@@ -229,7 +232,7 @@ BOOL CALLBACK AboutDlgProc(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam) {
     return TRUE;
 }
 
-LRESULT CALLBACK HookWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
+static LRESULT CALLBACK HookWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     switch (msg) {
         case WM_COMMAND:
             switch (LOWORD(wParam)) {
@@ -312,84 +315,181 @@ LRESULT CALLBACK HookWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) 
     return DefWindowProc(hwnd, msg, wParam, lParam);
 }
 
-int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE /*hPrevInstance*/, _In_ LPSTR /*szCmdLine*/, _In_ int /*iCmdShow*/) {
+static bool InstanceExists()
+{
+    return (_hwndHook != NULL);
+}
+
+static bool IsAlreadyMinimized(HWND windowHandle)
+{
+    return (FindInTray(windowHandle) != -1);
+}
+
+static int OnCloseExistingInstance()
+{
+    if (!InstanceExists())
+    {
+        return -1;
+    }
+
+    // If an application processes this message, it should return zero.
+    return SendMessage(_hwndHook, WM_CLOSE, 0, 0);
+}
+
+static int OnMinimizeWindowByHandle(HWND windowHandle)
+{
+    if (windowHandle == NULL)
+    {
+        MessageBox(NULL, L"Invalid window handle!", APP_NAME, MB_OK | MB_ICONERROR);
+        return -1;
+    }
+
+    if (IsAlreadyMinimized(windowHandle))
+    {
+        RestoreWindowFromTray(windowHandle);
+    }
+    else
+    {
+        if (!MinimizeWindowToTray(windowHandle))
+        {
+            MessageBox(NULL, L"Can't minimize window!", APP_NAME, MB_OK | MB_ICONERROR);
+            return -2;
+        }
+    }
+
+    return 0;
+}
+
+static int OnRunInBackground(HINSTANCE hInstance)
+{
+    WNDCLASS wc {};
+    MSG msg;
+
     _hInstance = hInstance;
 
-    int argc;
-    LPWSTR * argv = CommandLineToArgvW(GetCommandLineW(), &argc);
-    bool shouldExit = false;
-    bool useHook = true;
-    for (int a = 0; a < argc; ++a) {
-        if (!wcscmp(argv[a], L"--exit")) {
-            shouldExit = true;
-        }
-        if (!wcscmp(argv[a], L"--no-hook")) {
-            useHook = false;
-        }
-    }
-
-    _hwndHook = FindWindow(NAME, NAME);
-    if (_hwndHook) {
-        if (shouldExit) {
-            SendMessage(_hwndHook, WM_CLOSE, 0, 0);
-        } else {
-            MessageBox(NULL, L"RBTray is already running.", L"RBTray", MB_OK | MB_ICONINFORMATION);
-        }
+    if (!(_hLib = LoadLibrary(L"RBHook.dll")))
+    {
+        MessageBox(NULL, L"Error loading RBHook.dll.", APP_NAME, MB_OK | MB_ICONERROR);
         return 0;
     }
 
-    if (useHook) {
-        if (!(_hLib = LoadLibrary(L"RBHook.dll"))) {
-            MessageBox(NULL, L"Error loading RBHook.dll.", L"RBTray", MB_OK | MB_ICONERROR);
-            return 0;
-        }
-        if (!RegisterHook(_hLib)) {
-            MessageBox(NULL, L"Error setting hook procedure.", L"RBTray", MB_OK | MB_ICONERROR);
-            return 0;
-        }
+    if (!RegisterHook(_hLib))
+    {
+        MessageBox(NULL, L"Error setting hook procedure.", APP_NAME, MB_OK | MB_ICONERROR);
+        return 0;
     }
 
-    WNDCLASS wc;
-    wc.style         = 0;
-    wc.lpfnWndProc   = HookWndProc;
-    wc.cbClsExtra    = 0;
-    wc.cbWndExtra    = 0;
-    wc.hInstance     = hInstance;
-    wc.hIcon         = NULL;
-    wc.hCursor       = NULL;
+    wc.style = 0;
+    wc.lpfnWndProc = HookWndProc;
+    wc.cbClsExtra = 0;
+    wc.cbWndExtra = 0;
+    wc.hInstance = hInstance;
+    wc.hIcon = NULL;
+    wc.hCursor = NULL;
     wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
-    wc.lpszMenuName  = NULL;
-    wc.lpszClassName = NAME;
-    if (!RegisterClass(&wc)) {
-        MessageBox(NULL, L"Error creating window class", L"RBTray", MB_OK | MB_ICONERROR);
+    wc.lpszMenuName = NULL;
+    wc.lpszClassName = APP_NAME;
+
+    if (!RegisterClass(&wc))
+    {
+        MessageBox(NULL, L"Error creating window class", APP_NAME, MB_OK | MB_ICONERROR);
         return 0;
     }
 
-    if (!(_hwndHook = CreateWindow(NAME, NAME, WS_OVERLAPPED, 0, 0, 0, 0, (HWND)NULL, (HMENU)NULL, (HINSTANCE)hInstance, (LPVOID)NULL))) {
-        MessageBox(NULL, L"Error creating window", L"RBTray", MB_OK | MB_ICONERROR);
+    if (!(_hwndHook = CreateWindow(APP_NAME, APP_NAME, WS_OVERLAPPED, 0, 0, 0, 0, (HWND)NULL, (HMENU)NULL, (HINSTANCE)hInstance, (LPVOID)NULL))) {
+        MessageBox(NULL, L"Error creating window", APP_NAME, MB_OK | MB_ICONERROR);
         return 0;
     }
 
-    for (int i = 0; i < MAXTRAYITEMS; i++) {
+    for (int i = 0; i < MAXTRAYITEMS; i++)
+    {
         _hwndItems[i] = NULL;
     }
 
     WM_TASKBAR_CREATED = RegisterWindowMessage(L"TaskbarCreated");
 
-    BOOL registeredHotKey = RegisterHotKey(_hwndHook, 0, MOD_ALT | MOD_CONTROL, VK_DOWN);
-    if (!registeredHotKey) {
-        MessageBox(NULL, L"Couldn't register hotkey", L"RBTray", MB_OK | MB_ICONERROR);
+    BOOL registeredHotKey = RegisterHotKey(_hwndHook, 0, MOD_WIN | MOD_ALT, VK_DOWN);
+    if (!registeredHotKey)
+    {
+        MessageBox(NULL, L"Couldn't register hotkey", APP_NAME, MB_OK | MB_ICONERROR);
     }
 
-    MSG msg;
-    while (GetMessage(&msg, nullptr, 0, 0)) {
+    while (GetMessage(&msg, nullptr, 0, 0))
+    {
         TranslateMessage(&msg);
         DispatchMessage(&msg);
     }
 
-    if (registeredHotKey) {
+    if (registeredHotKey)
+    {
         UnregisterHotKey(_hwndHook, 0);
     }
 
     return (int)msg.wParam;
 }
+
+int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE /* hPrevInstance */, _In_ LPSTR /* szCmdLine */, _In_ int /* iCmdShow */) 
+{
+    LPWSTR* argList;
+    int argCount;
+
+    argList = CommandLineToArgvW(GetCommandLine(), &argCount);
+    if (argList == NULL)
+    {
+        MessageBox(NULL, L"Unable to parse command line!", APP_NAME, MB_OK | MB_ICONERROR);
+        return -1;
+    }
+
+    if (argCount > 3)
+    {
+        MessageBox(NULL, L"Too many command line arguments!", APP_NAME, MB_OK | MB_ICONERROR);
+        return -1;
+    }
+
+    _hwndHook = FindWindow(APP_NAME, APP_NAME);
+
+    if (argCount > 1)
+    {
+        LPWSTR command = argList[1];
+
+        if (AreEqual(command, L"--exit"))
+        {
+            return OnCloseExistingInstance();
+        }
+        else if (AreEqual(command, L"--handle"))
+        {
+            LPWSTR commandArg = argList[2];
+
+            HWND windowHandle = (HWND)wcstol(commandArg, NULL, 0);
+            return OnMinimizeWindowByHandle(windowHandle);
+        }
+        else if (AreEqual(command, L"--class"))
+        {
+            LPWSTR className = argList[2];
+
+            HWND windowHandle = FindWindow(className, NULL);
+            return OnMinimizeWindowByHandle(windowHandle);
+        }
+        else if (AreEqual(command, L"--title"))
+        {
+            LPWSTR titleName = argList[2];
+
+            HWND windowHandle = FindWindow(NULL, titleName);
+            return OnMinimizeWindowByHandle(windowHandle);
+        }
+        else
+        {
+            MessageBox(NULL, L"Unsupported command line arguments!", APP_NAME, MB_OK | MB_ICONERROR);
+            return -1;
+        }
+    }
+
+    if (_hwndHook)
+    {
+        MessageBox(NULL, L"RBTray is already running.", APP_NAME, MB_OK | MB_ICONINFORMATION);
+        return 0;
+    }
+
+    return OnRunInBackground(hInstance);
+}
+

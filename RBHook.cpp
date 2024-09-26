@@ -53,7 +53,7 @@ LRESULT CALLBACK MouseProc(int nCode, WPARAM wParam, LPARAM lParam) {
                     //DEBUG_PRINTF("%s(%d): up hit\n", __FUNCTION__, __LINE__);
                     if (info->hwnd == _hLastHit) {
                         //DEBUG_PRINTF("%s(%d): up hit match\n", __FUNCTION__, __LINE__);
-                        PostMessage(FindWindow(NAME, NAME), WM_ADDTRAY, 0, (LPARAM)info->hwnd);
+                        PostMessage(FindWindow(APP_NAME, APP_NAME), WM_ADDTRAY, 0, (LPARAM)info->hwnd);
                     }
                     _hLastHit = NULL;
                     return 1;
@@ -79,7 +79,7 @@ LRESULT CALLBACK CallWndProcRet(int nCode, WPARAM wParam, LPARAM lParam) {
             (((WINDOWPOS *)msg->lParam)->flags & SWP_SHOWWINDOW) != 0) ||
             (msg->message == WM_NCDESTROY))
         {
-            PostMessage(FindWindow(NAME, NAME), WM_REFRTRAY, 0, (LPARAM)msg->hwnd);
+            PostMessage(FindWindow(APP_NAME, APP_NAME), WM_REFRTRAY, 0, (LPARAM)msg->hwnd);
         }
 
         //if ((msg->message == WM_SYSCOMMAND)) {// && (msg->wParam == SC_MINIMIZE)) {

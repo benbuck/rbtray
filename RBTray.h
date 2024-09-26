@@ -20,7 +20,7 @@
 //
 // ****************************************************************************
 
-#define NAME L"RBTrayHook"
+#define APP_NAME L"RBTray"
 
 #define WM_ADDTRAY  0x0401
 #define WM_REMTRAY  0x0402
@@ -35,3 +35,13 @@
 
 BOOL DLLIMPORT RegisterHook(HMODULE);
 void DLLIMPORT UnRegisterHook();
+
+static inline bool AreEqual(const wchar_t* left, const wchar_t* right) 
+{
+    if (left == nullptr || right == nullptr) 
+    {
+        return false; 
+    }
+
+    return (wcscmp(left, right) == 0);
+}
