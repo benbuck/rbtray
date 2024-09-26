@@ -105,6 +105,12 @@ static bool MinimizeWindowToTray(HWND hwnd)
         hwnd = GetAncestor(hwnd, GA_ROOT);
     }
 
+    // Hide window before AddWindowToTray call because sometimes RefreshWindowInTray
+    // can be called from inside ShowWindow before program window is actually hidden
+    // and as a result RemoveWindowFromTray is called which immediately removes just
+    // added tray icon.
+    ShowWindow(hwnd, SW_HIDE);
+
     // Add icon to tray if it's not already there
     if (FindInTray(hwnd) == -1)
     {
