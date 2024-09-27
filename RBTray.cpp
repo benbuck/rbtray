@@ -34,19 +34,6 @@ static HWND _hWndHook;
 static HWND _hWndItems[MAX_TRAY_ITEMS];
 static HWND _hWndForMenu;
 
-static int FindInTray(HWND hWnd) 
-{
-    for (int i = 0; i < MAX_TRAY_ITEMS; i++)
-    {
-        if (_hWndItems[i] == hWnd) 
-        {
-            return i;
-        }
-    }
-
-    return -1;
-}
-
 static HICON GetWindowIcon(HWND hWnd)
 {
     HICON icon = nullptr;
@@ -71,7 +58,20 @@ static HICON GetWindowIcon(HWND hWnd)
     return LoadIcon(NULL, IDI_WINLOGO);
 }
 
-static bool AddToTray(int i)
+static int FindWindowInTray(HWND hWnd)
+{
+    for (int i = 0; i < MAX_TRAY_ITEMS; i++)
+    {
+        if (_hWndItems[i] == hWnd)
+        {
+            return i;
+        }
+    }
+
+    return -1;
+}
+
+static bool AddWindowToTray(int i)
 {
     NOTIFYICONDATA nid = { sizeof(nid) };
 
@@ -106,7 +106,7 @@ static bool AddToTray(int i)
 
 static bool AddWindowToTray(HWND hWnd) 
 {
-    int i = FindInTray(NULL);
+    int i = FindWindowInTray(NULL);
     if (i == -1) 
     {
         return false;
@@ -114,7 +114,31 @@ static bool AddWindowToTray(HWND hWnd)
 
     _hWndItems[i] = hWnd;
 
-    return AddToTray(i);
+    return AddWindowToTray(i);
+}
+
+static bool RemoveWindowFromTray(int i) {
+    NOTIFYICONDATA nid;
+    ZeroMemory(&nid, sizeof(nid));
+    nid.cbSize = NOTIFYICONDATA_V2_SIZE;
+    nid.hWnd   = _hWndHook;
+    nid.uID    = (UINT)i;
+    if (!Shell_NotifyIcon(NIM_DELETE, &nid)) {
+        return false;
+    }
+    return true;
+}
+
+static bool RemoveWindowFromTray(HWND hWnd) {
+    int i = FindWindowInTray(hWnd);
+    if (i == -1) {
+        return false;
+    }
+    if (!RemoveWindowFromTray(i)) {
+        return false;
+    }
+    _hWndItems[i] = NULL;
+    return true;
 }
 
 static bool MinimizeWindowToTray(HWND hWnd)
@@ -139,7 +163,7 @@ static bool MinimizeWindowToTray(HWND hWnd)
     ShowWindow(hWnd, SW_HIDE);
 
     // Add icon to tray if it's not already there
-    if (FindInTray(hWnd) == -1)
+    if (FindWindowInTray(hWnd) == -1)
     {
         if (!AddWindowToTray(hWnd))
         {
@@ -153,30 +177,6 @@ static bool MinimizeWindowToTray(HWND hWnd)
 
     // Hide window
     return ShowWindow(hWnd, SW_HIDE);
-}
-
-static bool RemoveFromTray(int i) {
-    NOTIFYICONDATA nid;
-    ZeroMemory(&nid, sizeof(nid));
-    nid.cbSize = NOTIFYICONDATA_V2_SIZE;
-    nid.hWnd   = _hWndHook;
-    nid.uID    = (UINT)i;
-    if (!Shell_NotifyIcon(NIM_DELETE, &nid)) {
-        return false;
-    }
-    return true;
-}
-
-static bool RemoveWindowFromTray(HWND hWnd) {
-    int i = FindInTray(hWnd);
-    if (i == -1) {
-        return false;
-    }
-    if (!RemoveFromTray(i)) {
-        return false;
-    }
-    _hWndItems[i] = NULL;
-    return true;
 }
 
 static void RestoreWindowFromTray(HWND hWnd) {
@@ -202,7 +202,7 @@ static void CloseWindowFromTray(HWND hWnd) {
 }
 
 static void RefreshWindowInTray(HWND hWnd) {
-    int i = FindInTray(hWnd);
+    int i = FindWindowInTray(hWnd);
     if (i == -1) {
         return;
     }
@@ -218,6 +218,11 @@ static void RefreshWindowInTray(HWND hWnd) {
         GetWindowText(hWnd, nid.szTip, sizeof(nid.szTip) / sizeof(nid.szTip[0]));
         Shell_NotifyIcon(NIM_MODIFY, &nid);
     }
+}
+
+static bool IsWindowAlreadyMinimized(HWND hWnd)
+{
+    return (FindWindowInTray(hWnd) != -1);
 }
 
 static void ExecuteMenu() {
@@ -338,7 +343,7 @@ static LRESULT CALLBACK HookWndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM l
             if (msg == WM_TASKBAR_CREATED) {
                 for (int i = 0; i < MAX_TRAY_ITEMS; i++) {
                     if (_hWndItems[i]) {
-                        AddToTray(i);
+                        AddWindowToTray(i);
                     }
                 }
             }
@@ -353,11 +358,6 @@ static bool InstanceExists()
     return (_hWndHook != NULL);
 }
 
-static bool IsAlreadyMinimized(HWND windowHandle)
-{
-    return (FindInTray(windowHandle) != -1);
-}
-
 static int OnCloseExistingInstance()
 {
     if (!InstanceExists())
@@ -369,21 +369,21 @@ static int OnCloseExistingInstance()
     return SendMessage(_hWndHook, WM_CLOSE, 0, 0);
 }
 
-static int OnMinimizeWindowByHandle(HWND windowHandle)
+static int OnMinimizeWindowByHandle(HWND hWnd)
 {
-    if (windowHandle == NULL)
+    if (hWnd == NULL)
     {
         MessageBox(NULL, L"Invalid window handle!", APP_NAME, MB_OK | MB_ICONERROR);
         return -1;
     }
 
-    if (IsAlreadyMinimized(windowHandle))
+    if (IsWindowAlreadyMinimized(hWnd))
     {
-        RestoreWindowFromTray(windowHandle);
+        RestoreWindowFromTray(hWnd);
     }
     else
     {
-        if (!MinimizeWindowToTray(windowHandle))
+        if (!MinimizeWindowToTray(hWnd))
         {
             MessageBox(NULL, L"Can't minimize window!", APP_NAME, MB_OK | MB_ICONERROR);
             return -2;
@@ -469,18 +469,18 @@ static bool HandleCommand(LPWSTR command, LPWSTR commandArg)
     }
     else if (AreEqual(command, L"--handle")) 
     {
-        HWND windowHandle = (HWND)wcstol(commandArg, NULL, 0);
-        return OnMinimizeWindowByHandle(windowHandle) == 0;
+        HWND hWnd = (HWND)wcstol(commandArg, NULL, 0);
+        return OnMinimizeWindowByHandle(hWnd) == 0;
     }
     else if (AreEqual(command, L"--class")) 
     {
-        HWND windowHandle = FindWindow(commandArg, NULL);
-        return OnMinimizeWindowByHandle(windowHandle) == 0;
+        HWND hWnd = FindWindow(commandArg, NULL);
+        return OnMinimizeWindowByHandle(hWnd) == 0;
     }
     else if (AreEqual(command, L"--title")) 
     {
-        HWND windowHandle = FindWindow(NULL, commandArg);
-        return OnMinimizeWindowByHandle(windowHandle) == 0;
+        HWND hWnd = FindWindow(NULL, commandArg);
+        return OnMinimizeWindowByHandle(hWnd) == 0;
     }
     else
     {
