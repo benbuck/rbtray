@@ -21,6 +21,7 @@
 // ****************************************************************************
 
 #include <windows.h>
+#include <algorithm>
 #include "RBTray.h"
 #include "resource.h"
 
@@ -400,19 +401,19 @@ static int OnRunInBackground(HINSTANCE hInstance)
 
     _hInstance = hInstance;
 
-    if (!(_hLib = LoadLibrary(L"RBHook.dll")))
+    if (!(_hLib = LoadLibrary(APP_HOOK_DLL_NAME)))
     {
-        MessageBox(NULL, L"Error loading RBHook.dll.", APP_NAME, MB_OK | MB_ICONERROR);
+        ShowError(L"Error loading %s.", APP_HOOK_DLL_NAME);
         return 0;
     }
 
     if (!RegisterHook(_hLib))
     {
-        MessageBox(NULL, L"Error setting hook procedure.", APP_NAME, MB_OK | MB_ICONERROR);
+        ShowError(L"Error setting hook procedure!");
         return 0;
     }
 
-    wc.style = 0;
+    wc.style = CS_HREDRAW | CS_VREDRAW;
     wc.lpfnWndProc = HookWndProc;
     wc.cbClsExtra = 0;
     wc.cbWndExtra = 0;
@@ -425,14 +426,17 @@ static int OnRunInBackground(HINSTANCE hInstance)
 
     if (!RegisterClass(&wc))
     {
-        MessageBox(NULL, L"Error creating window class", APP_NAME, MB_OK | MB_ICONERROR);
+        ShowError(L"Error creating window class!");
         return 0;
     }
 
-    if (!(_hWndHook = CreateWindow(APP_NAME, APP_NAME, WS_OVERLAPPED, 0, 0, 0, 0, (HWND)NULL, (HMENU)NULL, (HINSTANCE)hInstance, (LPVOID)NULL))) {
-        MessageBox(NULL, L"Error creating window", APP_NAME, MB_OK | MB_ICONERROR);
+    if (!(_hWndHook = CreateWindow(APP_NAME, APP_NAME, WS_OVERLAPPED, 0, 0, 0, 0, nullptr, nullptr, (HINSTANCE)hInstance, nullptr)))
+    {
+        ShowError(L"Error creating window!");
         return 0;
     }
+
+    std::fill(std::begin(_hWndItems), std::end(_hWndItems), nullptr);
 
     for (int i = 0; i < MAX_TRAY_ITEMS; i++)
     {
@@ -444,7 +448,7 @@ static int OnRunInBackground(HINSTANCE hInstance)
     BOOL registeredHotKey = RegisterHotKey(_hWndHook, 0, MOD_WIN | MOD_ALT, VK_DOWN);
     if (!registeredHotKey)
     {
-        MessageBox(NULL, L"Couldn't register hotkey", APP_NAME, MB_OK | MB_ICONERROR);
+        ShowError(L"Couldn't register hotkey!");
     }
 
     while (GetMessage(&msg, nullptr, 0, 0))
@@ -458,7 +462,7 @@ static int OnRunInBackground(HINSTANCE hInstance)
         UnregisterHotKey(_hWndHook, 0);
     }
 
-    return (int)msg.wParam;
+    return static_cast<int>(msg.wParam);
 }
 
 static bool HandleCommand(LPWSTR command, LPWSTR commandArg) 

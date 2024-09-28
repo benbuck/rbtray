@@ -21,6 +21,8 @@
 // ****************************************************************************
 
 constexpr auto APP_NAME = L"RBTray";
+constexpr auto APP_HOOK_DLL_NAME = L"RBHook.dll_";
+constexpr auto ERROR_MESSAGE_MAX_SIZE = 512;
 
 constexpr auto WM_ADDTRAY = 0x0401;
 constexpr auto WM_REMTRAY = 0x0402;
@@ -46,7 +48,16 @@ static inline bool AreEqual(const wchar_t* left, const wchar_t* right)
     return (wcscmp(left, right) == 0);
 }
 
-void ShowError(const wchar_t* message) 
+static void ShowError(const wchar_t* format, ...)
 {
+    wchar_t message[ERROR_MESSAGE_MAX_SIZE];
+
+    va_list args;
+    va_start(args, format);
+
+    vswprintf(message, sizeof(message) / sizeof(wchar_t), format, args); 
+
+    va_end(args);
+
     MessageBox(NULL, message, APP_NAME, MB_OK | MB_ICONERROR);
 }
