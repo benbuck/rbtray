@@ -118,27 +118,37 @@ static bool AddWindowToTray(HWND hWnd)
     return AddWindowToTray(i);
 }
 
-static bool RemoveWindowFromTray(int i) {
-    NOTIFYICONDATA nid;
-    ZeroMemory(&nid, sizeof(nid));
-    nid.cbSize = NOTIFYICONDATA_V2_SIZE;
+static bool RemoveWindowFromTray(int i) 
+{
+    NOTIFYICONDATA nid = { };
+    
+    nid.cbSize = sizeof(nid);
     nid.hWnd   = _hWndHook;
     nid.uID    = (UINT)i;
-    if (!Shell_NotifyIcon(NIM_DELETE, &nid)) {
+    
+    if (!Shell_NotifyIcon(NIM_DELETE, &nid)) 
+    {
         return false;
     }
+
     return true;
 }
 
-static bool RemoveWindowFromTray(HWND hWnd) {
+static bool RemoveWindowFromTray(HWND hWnd) 
+{
     int i = FindWindowInTray(hWnd);
-    if (i == -1) {
+    if (i == -1) 
+    {
         return false;
     }
-    if (!RemoveWindowFromTray(i)) {
+
+    if (!RemoveWindowFromTray(i)) 
+    {
         return false;
     }
+
     _hWndItems[i] = NULL;
+
     return true;
 }
 
@@ -235,8 +245,8 @@ static void ExecuteMenu() {
         MessageBox(NULL, L"Error creating menu.", APP_NAME, MB_OK | MB_ICONERROR);
         return;
     }
-    AppendMenu(hMenu, MF_STRING, IDM_ABOUT,   L"About RBTray");
-    AppendMenu(hMenu, MF_STRING, IDM_EXIT,    L"Exit RBTray");
+    AppendMenu(hMenu, MF_STRING, IDM_ABOUT,   L"About");
+    AppendMenu(hMenu, MF_STRING, IDM_EXIT,    L"Exit");
     AppendMenu(hMenu, MF_SEPARATOR, 0, NULL);
     AppendMenu(hMenu, MF_STRING, IDM_CLOSE,   L"Close Window");
     AppendMenu(hMenu, MF_STRING, IDM_RESTORE, L"Restore Window");
@@ -526,7 +536,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE /* hPrevInstance
 
     if (_hWndHook)
     {
-        ShowError(L"RBTray is already running.");
+        ShowError(L"%s is already running.", APP_NAME);
         return 0;
     }
 

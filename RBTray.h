@@ -21,7 +21,7 @@
 // ****************************************************************************
 
 constexpr auto APP_NAME = L"RBTray";
-constexpr auto APP_HOOK_DLL_NAME = L"RBHook.dll_";
+constexpr auto APP_HOOK_DLL_NAME = L"RBHook.dll";
 constexpr auto ERROR_MESSAGE_MAX_SIZE = 512;
 
 constexpr auto WM_ADDTRAY = 0x0401;
