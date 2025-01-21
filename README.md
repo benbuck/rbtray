@@ -8,9 +8,9 @@ to be minimized to the system tray by:
 - Using the Control-Alt-Down hotkey
 
 Not all of these methods will work for every window, so please use whichever
-one works for your needs. Also note that some windows can not be properly
-minimized at all. The most common type is Windows Store app windows, such as
-WhatsApp.
+method works best for your needs. Also note that some types of windows can not
+be properly minimized at all, most notably Windows Store application windows
+such as WhatsApp.
 
 > [!NOTE]
 > RBTray is currently in maintenance mode, meaning no new features will be added,
