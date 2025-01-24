@@ -1,14 +1,20 @@
 # RBTray
 
-RBTray is a small Windows program that runs in the background and allows almost
-any window to be minimized to the system tray by:
+RBTray is a small Windows program that runs in the background and allows windows
+to be minimized to the system tray by:
 
 - Right-clicking its minimize button
 - Shift-right-clicking its title bar
 - Using the Control-Alt-Down hotkey
 
-Note that not all of these methods will work for every window, so please use
-whichever one works for your needs.
+Not all of these methods will work for every window, so please use whichever
+method works best for your needs. Also note that some types of windows can not
+be properly minimized at all, most notably Windows Store application windows
+such as WhatsApp.
+
+> [!NOTE]
+> RBTray is currently in maintenance mode, meaning no new features will be added,
+> but bugs may be fixed if reported.
 
 RBTray is free, open source, and is distributed under the terms of the [GNU
 General Public Licence](http://www.gnu.org/copyleft/gpl.html).
@@ -29,8 +35,8 @@ RBTray.exe in your Start menu's Startup group.
 On Windows 10 that is located at
 `"C:\Users\YOUR_USERNAME_HERE\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup"`
 
-But a **_much_** quicker way to access it is to press "`WIN` + `R`" then type
-(or copy & paste) `shell:Startup`
+An alternative way to access it is to press "`WIN` + `R`" then type
+`shell:Startup`.
 
 ## Using
 
