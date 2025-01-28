@@ -146,8 +146,8 @@ static bool RemoveWindowFromTray(HWND hwnd) {
 }
 
 static void RestoreWindowFromTray(HWND hwnd) {
-	ShowWindow(hwnd, SW_RESTORE);
-	ShowWindow(hwnd, SW_SHOW);
+    ShowWindow(hwnd, SW_RESTORE);
+    ShowWindow(hwnd, SW_SHOW);
     SetForegroundWindow(hwnd);
     RemoveWindowFromTray(hwnd);
 }
