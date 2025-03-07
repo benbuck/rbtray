@@ -1,5 +1,8 @@
 # RBTray
 
+> [!NOTE]
+> RBTray is currently frozen, meaning no changes or new releases are planned.
+
 RBTray is a small Windows program that runs in the background and allows windows
 to be minimized to the system tray by:
 
