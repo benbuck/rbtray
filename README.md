@@ -1,7 +1,8 @@
 # RBTray
 
 > [!NOTE]
-> RBTray is currently frozen, meaning no changes or new releases are planned.
+> RBTray is currently in maintenance mode, meaning no new features will be added,
+> but bugs may be fixed if reported.
 
 RBTray is a small Windows program that runs in the background and allows windows
 to be minimized to the system tray by:
@@ -14,10 +15,6 @@ Not all of these methods will work for every window, so please use whichever
 method works best for your needs. Also note that some types of windows can not
 be properly minimized at all, most notably Windows Store application windows
 such as WhatsApp.
-
-> [!NOTE]
-> RBTray is currently in maintenance mode, meaning no new features will be added,
-> but bugs may be fixed if reported.
 
 RBTray is free, open source, and is distributed under the terms of the [GNU
 General Public Licence](http://www.gnu.org/copyleft/gpl.html).
