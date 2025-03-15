@@ -1,8 +1,12 @@
 # RBTray
 
+## Status
+
 > [!NOTE]
 > RBTray is currently in maintenance mode, meaning no new features will be added,
 > but bugs may be fixed if reported.
+
+## Overview
 
 RBTray is a small Windows program that runs in the background and allows windows
 to be minimized to the system tray by:
